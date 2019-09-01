@@ -9,7 +9,6 @@ const error = chalk.bold.red;
 const success = chalk.keyword("green");
 
 (async () => {
-	fs.openSync("acs-database.json", "w");
 	try {
 		// open the headless browser
 		var browser = await puppeteer.launch({
@@ -19,20 +18,23 @@ const success = chalk.keyword("green");
 		var page = await browser.newPage();
 		// enter url in page
 		var bottomNum = 4378;
-		var topNum = 4444;
+		var topNum = 4390;
 		var totalNum = topNum - bottomNum + 1;
+		var acs = [];
 		for (var i = bottomNum; i >= bottomNum && i <= topNum; i++) {
 			await page.goto("http://www.scp-wiki.net/scp-" + i);
-			var acs;
+			var currentNum = Math.abs(bottomNum - i);		
+			console.log(currentNum);	
 			try { 
 				await page.waitForSelector("div.anom-bar-container", {timeout: 5000});
 
-				acs = await page.evaluate(() => {
+				acs[currentNum] = await page.evaluate(() => {
 					var itemNumber = document.querySelectorAll("div.top-left-box > span.number");
 					var clearanceLevel = document.querySelectorAll("div.top-right-box > div.level");
 					var containClass = document.querySelectorAll("div.contain-class > div.class-text");					
 					var disruptClass = document.querySelectorAll("div.disrupt-class > div.class-text");
 					var riskClass = document.querySelectorAll("div.risk-class > div.class-text");
+					
 					var acsArray = [];
 
 					try {
@@ -57,7 +59,7 @@ const success = chalk.keyword("green");
 					}													
 
 					return acsArray;
-				});
+				});				
 				await page.screenshot({ path:"./screenshots/acs-pages/acs-page-" + i + ".png"});
 			} catch (err) {
 				console.log("No ACS Element. Brute force scraping instead.");
@@ -220,25 +222,35 @@ const success = chalk.keyword("green");
 						(warningClass) ? "warning" :
 						(dangerClass) ? "danger" :
 						(criticalClass) ? "critical" :
-						"none";					
-				}
-				acs = {
-					itemNumber: itemNum,
-					clearance: clear,
-					contain: contain,
-					secondary: second,
-					disrupt: disrupt,
-					risk: risk
-				};
-			}			
-			// Writing the news inside a json file
-			fs.writeFile("acs-database.json", JSON.stringify(acs, null, 4), (err) => {
-				if (err) throw err;
-				console.log("Saved!");
-			});	
-			console.log(i - bottomNum + 1 + "/" + totalNum);		
+						"none";
+						
+					acs[currentNum] = {
+						itemNumber: itemNum,
+						clearance: clear,
+						contain: contain,
+						secondary: second,
+						disrupt: disrupt,
+						risk: risk
+					};
+				} else {
+					console.log("No ACS Found :[");
+				}			
+			}	
+			console.log(i - bottomNum + 1 + "/" + totalNum);							
+		}
+		function replacer(key, value) {
+			// Filtering out properties
+			if (value === null) {
+				return undefined;
+			}
+			return value;
 		}
 		// console.log(acs);
+		fs.writeFileSync("acs-database.json", JSON.stringify(acs, replacer, 4), (err) => {
+			if (err) throw err;
+			console.log("Saved!");
+		});	
+		
 		await browser.close();
 		console.log(success("Browser Closed"));
 	} catch (err) {
