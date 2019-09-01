@@ -1,0 +1,26 @@
+{
+  "name": "acs-database",
+  "description": "Build a list of pages that use the Anomaly Classification System (ACS) on the SCP Wiki",
+  "version": "0.0.1",
+  "authors": "Woedenaz",
+  "license": "CC-BY-SA-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Woedenaz/acs-database"
+  },
+  "devDependencies": {
+    "eslint-config-node": "^4.0.0",
+    "node": "latest",
+    "puppeteer": "^1.19.0",
+    "chalk": "^2.4.2"
+  },
+  "scripts": {
+    "precommit": "eslint ."
+  },
+  "dependencies": {
+    "chai": "^4.2.0",
+    "expect-puppeteer": "^4.3.0",
+    "puppeteer-select": "^1.0.3",
+    "sizzle": "^2.3.4"
+  }
+}
