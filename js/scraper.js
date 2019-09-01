@@ -12,7 +12,8 @@ const success = chalk.keyword("green");
 	try {
 		// open the headless browser
 		var browser = await puppeteer.launch({
-			headless: true
+			headless: true,
+			args: ['--no-sandbox', '--disable-setuid-sandbox'],
 		});
 		// open a new page
 		var page = await browser.newPage();
