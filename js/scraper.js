@@ -247,7 +247,10 @@ const success = chalk.keyword("green");
 			return value;
 		}
 		// console.log(acs);
-		fs.writeFileSync("acs-database.json", JSON.stringify(acs, replacer, 4), (err) => {
+		acsFiltered = acs.filter(function(el) {
+			return el !=null;
+		});
+		fs.writeFileSync("acs-database.json", JSON.stringify(acsFiltered, replacer, 4), (err) => {
 			if (err) throw err;
 			console.log("Saved!");
 		});	
