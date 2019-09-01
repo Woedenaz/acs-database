@@ -99,11 +99,13 @@ const success = chalk.keyword("green");
 						console.log("Item # Error");
 					}
 
+					var containContainer;								
+
 					try {
 						contain = await page.evaluate(() => {					
 							containContainer = document
 								.evaluate(
-									'//strong[contains(., "Containment Class:")]',
+									'/html/body//text()[contains(translate(., "ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"),"containment class")]',
 									document,
 									null,
 									XPathResult.FIRST_ORDERED_NODE_TYPE,
@@ -111,112 +113,52 @@ const success = chalk.keyword("green");
 								)
 								.singleNodeValue;
 							
-								return containContainer.nextSibling.textContent.trim() 
-									|| containContainer.nextSibling.innerText.trim()
-									|| containContainer.nextElementSibling.textContent.trim()
-									|| containContainer.nextElementSibling.innerText.trim();
+								if (containContainer.nextSibling && containContainer.nextSibling.textContent.length > 1) {
+									return containContainer.nextSibling.textContent.trim();
+								} else if (containContainer.nextSibling && containContainer.nextSibling.textContent.length > 1) {
+									return containContainer.nextElementSibling.textContent.trim();
+								} else if (containContainer.parentNode.childNodes[1] && containContainer.parentNode.childNodes[1].textContent.length > 1) {
+									return containContainer.parentNode.childNodes[1].textContent.trim();
+								} else if (containContainer.parentNode.childNodes[2] && containContainer.parentNode.childNodes[2].textContent.length > 1) {
+									return containContainer.parentNode.childNodes[2].textContent.trim();
+								} else if (containContainer.parentNode.parentNode.childNodes[1] && containContainer.parentNode.parentNode.childNodes[1].textContent.length > 1) {
+									return containContainer.parentNode.parentNode.childNodes[1].textContent.trim();
+								} else if (containContainer.parentNode.parentNode.childNodes[2] && containContainer.parentNode.parentNode.childNodes[2].textContent.length > 1) {
+									return containContainer.parentNode.parentNode.childNodes[2].textContent.trim();
+								}								
 						});						
-					} catch (err) {
-						try {
-							contain = await page.evaluate(() => {							
-								const containContainer = document
-									.evaluate(
-										'//span[contains(., "Containment Class:")]',
-										document,
-										null,
-										XPathResult.FIRST_ORDERED_NODE_TYPE,
-										null
-									)
-									.singleNodeValue;
-									
-								return containContainer.nextSibling.textContent.trim() 
-									|| containContainer.nextSibling.innerText.trim()
-									|| containContainer.nextElementSibling.textContent.trim()
-									|| containContainer.nextElementSibling.innerText.trim();
-							});
-						} catch (err) {
-							try {
-								contain = await page.evaluate(() => {							
-									const containContainer = document
-										.evaluate(
-											'//b[contains(., "Containment Class:")]',
-											document,
-											null,
-											XPathResult.FIRST_ORDERED_NODE_TYPE,
-											null
-										)
-										.singleNodeValue;
-										
-									return containContainer.nextSibling.textContent.trim() 
-										|| containContainer.nextSibling.innerText.trim()
-										|| containContainer.nextElementSibling.textContent.trim()
-										|| containContainer.nextElementSibling.innerText.trim();
-								});
-							} catch (err) {								
-								contain = "none";
-								console.log("Containment Class Error");
-							}	
-						}	
-					}
+					} catch (err) {								
+						contain = "none";
+					}							
 
 					try {
-						second = await page.evaluate(() => {							
-							const secondContainer = document
+						second = await page.evaluate(() => {					
+							secondContainer = document
 								.evaluate(
-									'//strong[contains(., "Secondary Class:")]',
+									'/html/body//text()[contains(translate(., "ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"),"secondary class")]',
 									document,
 									null,
 									XPathResult.FIRST_ORDERED_NODE_TYPE,
 									null
 								)
 								.singleNodeValue;
-								
-							return secondContainer.nextSibling.textContent.trim() 
-								|| secondContainer.nextSibling.innerText.trim()
-								|| secondContainer.nextElementSibling.textContent.trim()
-								|| secondContainer.nextElementSibling.innerText.trim();
-						});
-					} catch (err) {
-						try {
-							second = await page.evaluate(() => {							
-								const secondContainer = document
-									.evaluate(
-										'//span[contains(., "Secondary Class:")]',
-										document,
-										null,
-										XPathResult.FIRST_ORDERED_NODE_TYPE,
-										null
-									)
-									.singleNodeValue;
-									
-								return secondContainer.nextSibling.textContent.trim() 
-									|| secondContainer.nextSibling.innerText.trim()
-									|| secondContainer.nextElementSibling.textContent.trim()
-									|| secondContainer.nextElementSibling.innerText.trim();
-							});
-						} catch (err) {
-							try {
-								second = await page.evaluate(() => {							
-									const secondContainer = document
-										.evaluate(
-											'//b[contains(., "Secondary Class:")]',
-											document,
-											null,
-											XPathResult.FIRST_ORDERED_NODE_TYPE,
-											null
-										)
-										.singleNodeValue;
-										
-									return secondContainer.nextSibling.textContent.trim() 
-										|| secondContainer.nextSibling.innerText.trim()
-										|| secondContainer.nextElementSibling.textContent.trim()
-										|| secondContainer.nextElementSibling.innerText.trim();
-								});
-							} catch (err) {								
-								second = "none";
-								console.log("Clearance Class Error");	
-							}	
-						}	
+							
+								if (secondContainer.nextSibling && secondContainer.nextSibling.textContent.length > 1) {
+									return secondContainer.nextSibling.textContent.trim();
+								} else if (secondContainer.nextSibling && secondContainer.nextSibling.textContent.length > 1) {
+									return secondContainer.nextElementSibling.textContent.trim();
+								} else if (secondContainer.parentNode.childNodes[1] && secondContainer.parentNode.childNodes[1].textContent.length > 1) {
+									return secondContainer.parentNode.childNodes[1].textContent.trim();
+								} else if (secondContainer.parentNode.childNodes[2] && secondContainer.parentNode.childNodes[2].textContent.length > 1) {
+									return secondContainer.parentNode.childNodes[2].textContent.trim();
+								} else if (secondContainer.parentNode.parentNode.childNodes[1] && secondContainer.parentNode.parentNode.childNodes[1].textContent.length > 1) {
+									return secondContainer.parentNode.parentNode.childNodes[1].textContent.trim();
+								} else if (secondContainer.parentNode.parentNode.childNodes[2] && secondContainer.parentNode.parentNode.childNodes[2].textContent.length > 1) {
+									return secondContainer.parentNode.parentNode.childNodes[2].textContent.trim();
+								}								
+						});						
+					} catch (err) {								
+						second = "none";						
 					}
 					
 					clear =
@@ -254,7 +196,7 @@ const success = chalk.keyword("green");
 				console.log(itemNum + "+" + contain + "+" + second + "+" + clear + "+" + disrupt + "+" + risk);
 			}			
 			// Writing the news inside a json file
-			fs.writeFile("acs-database.json", JSON.stringify(acs), (err) => {
+			fs.writeFile("acs-database.json", JSON.stringify(acs, null, 4), (err) => {
 				if (err) throw err;
 				console.log("Saved!");
 			});	

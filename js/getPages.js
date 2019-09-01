@@ -38,7 +38,7 @@ const component = "http://www.scp-wiki.net/component:anomaly-class-bar-source";
     // console.log(news);
     await browser.close();
     // Writing the news inside a json file
-    fs.writeFile("pages-with-ASC.json", JSON.stringify(pagesWithASC), function(err) {
+    fs.writeFile("pages-with-ASC.json", JSON.stringify(pagesWithASC, null, 4), function(err) {
       if (err) throw err;
       console.log("Saved!");
     });
