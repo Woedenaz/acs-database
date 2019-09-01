@@ -18,8 +18,8 @@ const success = chalk.keyword("green");
 		// open a new page
 		var page = await browser.newPage();
 		// enter url in page
-		var bottomNum = 3787;
-		var topNum = 3787;
+		var bottomNum = 4378;
+		var topNum = 4444;
 		var totalNum = topNum - bottomNum + 1;
 		for (var i = bottomNum; i >= bottomNum && i <= topNum; i++) {
 			await page.goto("http://www.scp-wiki.net/scp-" + i);
@@ -113,17 +113,35 @@ const success = chalk.keyword("green");
 								)
 								.singleNodeValue;
 							
-								if (containContainer.nextSibling && containContainer.nextSibling.textContent.length > 1) {
+								if (
+									containContainer.nextSibling 
+									&& 
+									containContainer.nextSibling.textContent.length > 1) {
 									return containContainer.nextSibling.textContent.trim();
-								} else if (containContainer.nextSibling && containContainer.nextSibling.textContent.length > 1) {
+								} else if (
+									containContainer.nextSibling 
+									&& 
+									containContainer.nextSibling.textContent.length > 1) {
 									return containContainer.nextElementSibling.textContent.trim();
-								} else if (containContainer.parentNode.childNodes[1] && containContainer.parentNode.childNodes[1].textContent.length > 1) {
+								} else if (
+									containContainer.parentNode.childNodes[1] 
+									&& 
+									containContainer.parentNode.childNodes[1].textContent.length > 1) {
 									return containContainer.parentNode.childNodes[1].textContent.trim();
-								} else if (containContainer.parentNode.childNodes[2] && containContainer.parentNode.childNodes[2].textContent.length > 1) {
+								} else if (
+									containContainer.parentNode.childNodes[2] 
+									&& 
+									containContainer.parentNode.childNodes[2].textContent.length > 1) {
 									return containContainer.parentNode.childNodes[2].textContent.trim();
-								} else if (containContainer.parentNode.parentNode.childNodes[1] && containContainer.parentNode.parentNode.childNodes[1].textContent.length > 1) {
+								} else if (
+									containContainer.parentNode.parentNode.childNodes[1] 
+									&& 
+									containContainer.parentNode.parentNode.childNodes[1].textContent.length > 1) {
 									return containContainer.parentNode.parentNode.childNodes[1].textContent.trim();
-								} else if (containContainer.parentNode.parentNode.childNodes[2] && containContainer.parentNode.parentNode.childNodes[2].textContent.length > 1) {
+								} else if (
+									containContainer.parentNode.parentNode.childNodes[2] 
+									&& 
+									containContainer.parentNode.parentNode.childNodes[2].textContent.length > 1) {
 									return containContainer.parentNode.parentNode.childNodes[2].textContent.trim();
 								}								
 						});						
@@ -143,17 +161,35 @@ const success = chalk.keyword("green");
 								)
 								.singleNodeValue;
 							
-								if (secondContainer.nextSibling && secondContainer.nextSibling.textContent.length > 1) {
+								if (
+									secondContainer.nextSibling 
+									&& 
+									secondContainer.nextSibling.textContent.length > 1) {
 									return secondContainer.nextSibling.textContent.trim();
-								} else if (secondContainer.nextSibling && secondContainer.nextSibling.textContent.length > 1) {
+								} else if (
+									secondContainer.nextSibling 
+									&& 
+									secondContainer.nextSibling.textContent.length > 1) {
 									return secondContainer.nextElementSibling.textContent.trim();
-								} else if (secondContainer.parentNode.childNodes[1] && secondContainer.parentNode.childNodes[1].textContent.length > 1) {
+								} else if (
+									secondContainer.parentNode.childNodes[1] 
+									&& 
+									secondContainer.parentNode.childNodes[1].textContent.length > 1) {
 									return secondContainer.parentNode.childNodes[1].textContent.trim();
-								} else if (secondContainer.parentNode.childNodes[2] && secondContainer.parentNode.childNodes[2].textContent.length > 1) {
+								} else if (
+									secondContainer.parentNode.childNodes[2] 
+									&& 
+									secondContainer.parentNode.childNodes[2].textContent.length > 1) {
 									return secondContainer.parentNode.childNodes[2].textContent.trim();
-								} else if (secondContainer.parentNode.parentNode.childNodes[1] && secondContainer.parentNode.parentNode.childNodes[1].textContent.length > 1) {
+								} else if (
+									secondContainer.parentNode.parentNode.childNodes[1] 
+									&& 
+									secondContainer.parentNode.parentNode.childNodes[1].textContent.length > 1) {
 									return secondContainer.parentNode.parentNode.childNodes[1].textContent.trim();
-								} else if (secondContainer.parentNode.parentNode.childNodes[2] && secondContainer.parentNode.parentNode.childNodes[2].textContent.length > 1) {
+								} else if (
+									secondContainer.parentNode.parentNode.childNodes[2] 
+									&& 
+									secondContainer.parentNode.parentNode.childNodes[2].textContent.length > 1) {
 									return secondContainer.parentNode.parentNode.childNodes[2].textContent.trim();
 								}								
 						});						
@@ -193,7 +229,15 @@ const success = chalk.keyword("green");
 					console.log(risk);
 					
 				}
-				console.log(itemNum + "+" + contain + "+" + second + "+" + clear + "+" + disrupt + "+" + risk);
+				acs = {
+					itemNumber: itemNum,
+					clearance: clear,
+					contain: contain,
+					secondary: second,
+					disrupt: disrupt,
+					risk: risk
+				};
+				console.log(acs);
 			}			
 			// Writing the news inside a json file
 			fs.writeFile("acs-database.json", JSON.stringify(acs, null, 4), (err) => {
