@@ -60,7 +60,7 @@ const success = chalk.keyword("green");
 				});
 				await page.screenshot({ path:"./screenshots/acs-pages/acs-page-" + i + ".png"});
 			} catch (err) {
-				console.log("the element did not appear.");
+				console.log("No ACS Element. Brute force scraping instead.");
 				await page.screenshot({ path:"./screenshots/error-pages/error-page-" + i + ".png"});
 			
 
@@ -204,9 +204,7 @@ const success = chalk.keyword("green");
 						(cfClass) ? "3" :
 						(rsClass) ? "2" :
 						(urClass) ? "1" :
-						"none";
-						
-					console.log(clear);
+						"none";						
 					
 					disrupt =
 						(darkClass) ? "dark" :
@@ -216,18 +214,13 @@ const success = chalk.keyword("green");
 						(amidaClass) ? "amida" :
 						"none";
 
-					console.log(disrupt);
-
 					risk =
 						(noticeClass) ? "notice" :
 						(cautionClass) ? "caution" :
 						(warningClass) ? "warning" :
 						(dangerClass) ? "danger" :
 						(criticalClass) ? "critical" :
-						"none";
-
-					console.log(risk);
-					
+						"none";					
 				}
 				acs = {
 					itemNumber: itemNum,
@@ -237,7 +230,6 @@ const success = chalk.keyword("green");
 					disrupt: disrupt,
 					risk: risk
 				};
-				console.log(acs);
 			}			
 			// Writing the news inside a json file
 			fs.writeFile("acs-database.json", JSON.stringify(acs, null, 4), (err) => {
