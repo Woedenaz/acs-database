@@ -29,6 +29,7 @@ const crawlUrl = async (url) => {
 		// enter url in page
 		await page.goto(url);	
 		let acsResult;
+		console.log("Parsing" + url);
 		try { 
 			await page.waitForSelector("div.anom-bar-container", {timeout: 5000});
 
