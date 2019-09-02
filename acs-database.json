@@ -16,7 +16,7 @@
         "risk": "sonic the hedgehog sex"
     },
     {
-        "itemNumber": "SCP-SCP-4979",
+        "itemNumber": "SCP-4979",
         "clearance": "LEVEL3",
         "contain": "SAFE",
         "secondary": "none",
@@ -96,7 +96,7 @@
         "risk": "notice"
     },
     {
-        "itemNumber": "SCP-SCP-4818",
+        "itemNumber": "SCP-4818",
         "clearance": "LEVEL1",
         "contain": "EUCLID",
         "secondary": "none",
@@ -192,7 +192,7 @@
         "risk": "WARNING"
     },
     {
-        "itemNumber": "SCP-SCP-4525",
+        "itemNumber": "SCP-4525",
         "clearance": "LEVEL2",
         "contain": "EUCLID",
         "secondary": "none",
@@ -432,7 +432,7 @@
         "risk": "WARNING"
     },
     {
-        "itemNumber": "SCP-SCP-4040",
+        "itemNumber": "SCP-4040",
         "clearance": "LEVEL3",
         "contain": "KETER",
         "secondary": "none",
@@ -696,7 +696,7 @@
         "risk": "none"
     },
     {
-        "itemNumber": "SCP-SCP-3440",
+        "itemNumber": "SCP-3440",
         "clearance": "LEVEL2",
         "contain": "EUCLID",
         "secondary": "none",
