@@ -16,5 +16,9 @@
   },
   "scripts": {
     "precommit": "eslint ."
+  },
+  "dependencies": {
+    "apify": "^0.15.5",
+    "es6-promise-pool": "^2.5.0"
   }
 }
