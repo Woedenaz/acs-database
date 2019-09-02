@@ -9,7 +9,7 @@ var fs = require("fs");
 // MY OCD of colorful console.logs for debugging... IT HELPS
 const error = chalk.bold.red;
 const success = chalk.keyword("green");
-const CONCURRENCY = 20;
+const CONCURRENCY = 10;
 
 const URLS = [];
 let bottomNum = 4000;
