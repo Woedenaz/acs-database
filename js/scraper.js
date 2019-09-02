@@ -29,7 +29,11 @@ const crawlUrl = async (url) => {
 
 		const page = await browser.newPage();
 		// enter url in page
-		await page.goto(url);	
+		await page.goto(url, {
+			networkIdleTimeout: 5000,
+			waitUntil: 'networkidle',
+			timeout: 3000000	
+		});	
 		let acsResult;
 		console.log("Parsing: " + url);
 		remainNum ++;
