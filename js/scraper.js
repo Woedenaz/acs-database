@@ -8,7 +8,7 @@ var fs = require("fs");
 // MY OCD of colorful console.logs for debugging... IT HELPS
 const error = chalk.bold.red;
 const success = chalk.keyword("green");
-const CONCURRENCY = 5;
+const CONCURRENCY = 10;
 
 const URLS = [];
 let bottomNum = 4000;
@@ -252,7 +252,8 @@ const crawlUrl = async (url) => {
 };
 
 const promiseProducer = () => {
-    const url = URLS.pop();
+	const url = URLS.pop();
+	console.log(url);
     
     return url ? crawlUrl(url) : null;
 };
