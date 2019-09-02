@@ -30,7 +30,8 @@ const crawlUrl = async (url) => {
 		// enter url in page
 		await page.goto(url, {
 			waitUntil: 'networkidle2',
-			timeout: 3000000	
+			timeout: 3000000,
+			DEBUG="puppeteer:*"
 		});	
 		let acsResult;
 		console.log("Parsing: " + url);
