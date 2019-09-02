@@ -26,4 +26,11 @@ hs_err_pid*
 node_modules/
 package-lock.json
 .vscode/launch.json
+<<<<<<< HEAD
 acs-database.json
+=======
+acs-database.json
+
+# Misc
+screenshots/
+>>>>>>> 7a6dea51b1b6205baf94e3cd134874fe98d069be
