@@ -12,7 +12,7 @@ const CONCURRENCY = 10;
 
 const URLS = [];
 let bottomNum = 4000;
-let topNum = 5000;
+let topNum = 4305;
 let totalNum = topNum - bottomNum + 1;
 let remainNum = 0;
 
@@ -28,17 +28,14 @@ const crawlUrl = async (url) => {
 
 		const page = await browser.newPage();
 		// enter url in page
-		await page.goto(url, {
-			waitUntil: 'networkidle2',
-			timeout: 3000000	
-		});	
+		await page.goto(url);	
 		let acsResult;
 		console.log("Parsing: " + url);
 		remainNum ++;
 		perNum = Math.floor((remainNum / totalNum) * 100);
 		console.log("% Done: " + perNum + "%");
 		try { 
-			await page.waitForSelector("div.anom-bar-container", {timeout: 5000});
+			await page.waitForSelector("div.anom-bar-container", {timeout: 1000});
 
 			acsResult = await page.evaluate(() => {
 				var itemNumber = document.querySelectorAll("div.top-left-box > span.number");
@@ -253,7 +250,6 @@ const crawlUrl = async (url) => {
 
 const promiseProducer = () => {
 	const url = URLS.pop();
-	console.log(url);
     
     return url ? crawlUrl(url) : null;
 };

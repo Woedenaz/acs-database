@@ -12,13 +12,10 @@
     "eslint-config-node": "^4.0.0",
     "node": "latest",
     "puppeteer": "^1.19.0",
-    "chalk": "^2.4.2"
+    "chalk": "^2.4.2",
+    "es6-promise-pool": "^2.5.0"
   },
   "scripts": {
     "precommit": "eslint ."
-  },
-  "dependencies": {
-    "apify": "^0.15.5",
-    "es6-promise-pool": "^2.5.0"
   }
 }
