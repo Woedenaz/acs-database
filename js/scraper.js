@@ -9,12 +9,13 @@ var fs = require("fs");
 // MY OCD of colorful console.logs for debugging... IT HELPS
 const error = chalk.bold.red;
 const success = chalk.keyword("green");
-const CONCURRENCY = 5;
+const CONCURRENCY = 20;
 
 const URLS = [];
-var bottomNum = 4378;
-var topNum = 4444;
-var totalNum = topNum - bottomNum + 1;
+let bottomNum = 4000;
+let topNum = 5000;
+let totalNum = topNum - bottomNum + 1;
+let remainNum = 0;
 
 for (var i = bottomNum; i >= bottomNum && i <= topNum; i++) {
 	URLS.push("http://www.scp-wiki.net/scp-" + i);
@@ -25,11 +26,15 @@ let acs = [];
 
 const crawlUrl = async (url) => {
 	// open a new page
+
 		const page = await browser.newPage();
 		// enter url in page
 		await page.goto(url);	
 		let acsResult;
 		console.log("Parsing: " + url);
+		remainNum ++;
+		perNum = Math.floor((remainNum / totalNum) * 100);
+		console.log("% Done: " + perNum + "%");
 		try { 
 			await page.waitForSelector("div.anom-bar-container", {timeout: 5000});
 
@@ -67,7 +72,7 @@ const crawlUrl = async (url) => {
 			});				
 			await page.screenshot({ path:"./screenshots/acs-pages/acs-page-" + i + ".png"});
 		} catch (err) {
-			console.log("No ACS Element. Brute force scraping instead.");
+			console.log("No ACS Element on " + url + ". Brute force scraping instead.");
 			await page.screenshot({ path:"./screenshots/error-pages/error-page-" + i + ".png"});
 		
 
@@ -242,7 +247,6 @@ const crawlUrl = async (url) => {
 
 	acs.push(acsResult);
 	await page.close();
-
 };
 
 const promiseProducer = () => {
