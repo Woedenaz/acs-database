@@ -5,7 +5,7 @@ var fs = require("fs");
 // MY OCD of colorful console.logs for debugging... IT HELPS
 const error = chalk.bold.red;
 const success = chalk.keyword("green");
-const component = "http://www.scp-wiki.net/component:anomaly-class-bar-source";
+const component = "http://www.scp-wiki.net/component:black-highlighter-theme-dev";
 
 (async () => {
   try {
@@ -38,7 +38,7 @@ const component = "http://www.scp-wiki.net/component:anomaly-class-bar-source";
     // console.log(news);
     await browser.close();
     // Writing the news inside a json file
-    fs.writeFile("pages-with-ASC.json", JSON.stringify(pagesWithASC, null, 4), function(err) {
+    fs.writeFile("pages-with-BHL.json", JSON.stringify(pagesWithASC, null, 4), function(err) {
       if (err) throw err;
       console.log("Saved!");
     });
