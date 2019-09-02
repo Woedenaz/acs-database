@@ -12,9 +12,9 @@ const success = chalk.keyword("green");
 const CONCURRENCY = 5;
 
 const URLS = [];
-let bottomNum = 4692;
-let topNum = 4692;
-let totalNum = topNum - bottomNum + 1;
+let bottomNum = 4000;
+let topNum = 5000;
+let totalNum = topNum - bottomNum;
 let remainNum = 0;
 
 for (var i = bottomNum; i >= bottomNum && i <= topNum; i++) {
