@@ -2,7 +2,6 @@
 
 const puppeteer = require("puppeteer");
 const chalk = require("chalk");
-const Apify = require('apify');
 const PromisePool = require('es6-promise-pool');
 var fs = require("fs");
 
@@ -14,7 +13,7 @@ const CONCURRENCY = 5;
 const URLS = [];
 let bottomNum = 4000;
 let topNum = 5000;
-let totalNum = topNum - bottomNum;
+let totalNum = topNum - bottomNum + 1;
 let remainNum = 0;
 
 for (var i = bottomNum; i >= bottomNum && i <= topNum; i++) {
@@ -73,10 +72,10 @@ const crawlUrl = async (url) => {
 
 				return acsArray;
 			});				
-			await page.screenshot({ path:"./screenshots/acs-pages/acs-page-" + i + ".png"});
+			await page.screenshot({ path:"./screenshots/acs-pages/acs-page-" + url.substr(url.length - 4) + ".png"});
 		} catch (err) {
 			console.log("No ACS Element on " + url + ". Brute force scraping instead.");
-			await page.screenshot({ path:"./screenshots/error-pages/error-page-" + i + ".png"});
+			await page.screenshot({ path:"./screenshots/error-pages/error-page-" + url.substr(url.length - 4) + ".png"});
 		
 
 			const containClass = await page.evaluate(() => window.find("Containment Class"));
@@ -258,7 +257,7 @@ const promiseProducer = () => {
     return url ? crawlUrl(url) : null;
 };
 
-Apify.main(async () => {
+const mainFunc = async () => {
     // Starts browser.
     browser = await puppeteer.launch({
 		headless: true,
@@ -280,4 +279,6 @@ Apify.main(async () => {
     
     await browser.close();
 	console.log(success("Browser Closed"));
-});
+};
+
+mainFunc();
