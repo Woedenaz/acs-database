@@ -8,16 +8,22 @@ var fs = require("fs");
 // MY OCD of colorful console.logs for debugging... IT HELPS
 const error = chalk.bold.red;
 const success = chalk.keyword("green");
-const CONCURRENCY = 10;
+const CONCURRENCY = 15;
 
 const URLS = [];
-let bottomNum = 4000;
+let bottomNum = 1;
 let topNum = 5000;
 let totalNum = topNum - bottomNum + 1;
 let remainNum = 0;
 
 for (var i = bottomNum; i >= bottomNum && i <= topNum; i++) {
-	URLS.push("http://www.scp-wiki.net/scp-" + i);
+	if (i >= 2 && i <= 9) {
+		URLS.push("http://www.scp-wiki.net/scp-00" + i);
+	} else if (i >= 10 && i <= 99) {
+		URLS.push("http://www.scp-wiki.net/scp-0" + i);
+	} else {
+		URLS.push("http://www.scp-wiki.net/scp-" + i);
+	}
 }
 
 let browser;
