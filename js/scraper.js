@@ -30,7 +30,6 @@ const crawlUrl = async (url) => {
 		const page = await browser.newPage();
 		// enter url in page
 		await page.goto(url, {
-			networkIdleTimeout: 5000,
 			waitUntil: 'networkidle',
 			timeout: 3000000	
 		});	
