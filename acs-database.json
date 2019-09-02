@@ -1,0 +1,442 @@
+[
+    {
+        "itemNumber": "SCP-4999",
+        "clearance": "LEVEL3",
+        "contain": "KETER",
+        "secondary": "none",
+        "disrupt": "EKHI",
+        "risk": "NOTICE"
+    },
+    {
+        "itemNumber": "SCP-4991",
+        "clearance": "LEVEL4",
+        "contain": "NEUTRALIZED",
+        "secondary": "{$secondary-class}",
+        "disrupt": "fart",
+        "risk": "sonic the hedgehog sex"
+    },
+    {
+        "itemNumber": "SCP-SCP-4979",
+        "clearance": "LEVEL3",
+        "contain": "SAFE",
+        "secondary": "none",
+        "disrupt": "DARK",
+        "risk": "CAUTION"
+    },
+    {
+        "itemNumber": "SCP-4976",
+        "clearance": "LEVEL2",
+        "contain": "SAFE",
+        "secondary": "none",
+        "disrupt": "VLAM",
+        "risk": "NOTICE"
+    },
+    {
+        "itemNumber": "SCP-4971",
+        "clearance": "LEVEL4",
+        "contain": "ESOTERIC",
+        "secondary": "CERNUNNOS",
+        "disrupt": "EKHI",
+        "risk": "DANGER"
+    },
+    {
+        "itemNumber": "SCP-4958",
+        "clearance": "LEVEL1",
+        "contain": "KETER",
+        "secondary": "none",
+        "disrupt": "EKHI",
+        "risk": "NOTICE"
+    },
+    {
+        "itemNumber": "SCP-4935",
+        "clearance": "LEVEL4",
+        "contain": "EUCLID",
+        "secondary": "none",
+        "disrupt": "VLAM",
+        "risk": "CAUTION"
+    },
+    {
+        "itemNumber": "SCP-4933",
+        "clearance": "LEVEL4",
+        "contain": "EUCLID",
+        "secondary": "none",
+        "disrupt": "EKHI",
+        "risk": "WARNING"
+    },
+    {
+        "itemNumber": "SCP-4911",
+        "clearance": "LEVEL2",
+        "contain": "PENDING",
+        "secondary": "none",
+        "disrupt": "none",
+        "risk": "none"
+    },
+    {
+        "itemNumber": "SCP-4871",
+        "clearance": "none",
+        "contain": "Euclid",
+        "secondary": "none",
+        "disrupt": "none",
+        "risk": "danger"
+    },
+    {
+        "itemNumber": "SCP-4840",
+        "clearance": "LEVEL4",
+        "contain": "KETER",
+        "secondary": "none",
+        "disrupt": "EKHI",
+        "risk": "NOTICE"
+    },
+    {
+        "itemNumber": "SCP-4838",
+        "clearance": "LEVEL1",
+        "contain": "NEUTRALIZED",
+        "secondary": "none",
+        "disrupt": "vlam",
+        "risk": "notice"
+    },
+    {
+        "itemNumber": "SCP-SCP-4818",
+        "clearance": "LEVEL1",
+        "contain": "EUCLID",
+        "secondary": "none",
+        "disrupt": "VLAM",
+        "risk": "CAUTION"
+    },
+    {
+        "itemNumber": "SCP-4812",
+        "clearance": "LEVEL4",
+        "contain": "SEE BELOW",
+        "secondary": "none",
+        "disrupt": "EKHI",
+        "risk": "DANGER"
+    },
+    {
+        "itemNumber": "SCP-4790",
+        "clearance": "4",
+        "contain": "Pending",
+        "secondary": "none",
+        "disrupt": "none",
+        "risk": "notice"
+    },
+    {
+        "itemNumber": "SCP-4760",
+        "clearance": "LEVEL4",
+        "contain": "EUCLID",
+        "secondary": "none",
+        "disrupt": "KENEQ",
+        "risk": "DANGER"
+    },
+    {
+        "itemNumber": "SCP-4757",
+        "clearance": "LEVEL2",
+        "contain": "EUCLID",
+        "secondary": "none",
+        "disrupt": "EKHI",
+        "risk": "CAUTION"
+    },
+    {
+        "itemNumber": "SCP-4661",
+        "clearance": "LEVEL3",
+        "contain": "EUCLID",
+        "secondary": "none",
+        "disrupt": "KENEQ",
+        "risk": "WARNING"
+    },
+    {
+        "itemNumber": "SCP-4643",
+        "clearance": "LEVEL2",
+        "contain": "NEUTRALIZED",
+        "secondary": "{$secondary-class}",
+        "disrupt": "{$disruption-class}",
+        "risk": "{$risk-class}"
+    },
+    {
+        "itemNumber": "SCP-4624",
+        "clearance": "LEVEL1",
+        "contain": "EUCLID",
+        "secondary": "{$secondary-class}",
+        "disrupt": "VLAM",
+        "risk": "CAUTION"
+    },
+    {
+        "itemNumber": "SCP-4595",
+        "clearance": "LEVEL2",
+        "contain": "SAFE",
+        "secondary": "none",
+        "disrupt": "DARK",
+        "risk": "WARNING"
+    },
+    {
+        "itemNumber": "SCP-4553",
+        "clearance": "LEVEL2",
+        "contain": "KETER",
+        "secondary": "none",
+        "disrupt": "EKHI",
+        "risk": "NOTICE"
+    },
+    {
+        "itemNumber": "SCP-4598",
+        "clearance": "LEVEL4",
+        "contain": "KETER",
+        "secondary": "none",
+        "disrupt": "EKHI",
+        "risk": "CRITICAL"
+    },
+    {
+        "itemNumber": "SCP-4531",
+        "clearance": "LEVEL3",
+        "contain": "ESOTERIC",
+        "secondary": "THAUMIEL",
+        "disrupt": "KENEQ",
+        "risk": "WARNING"
+    },
+    {
+        "itemNumber": "SCP-SCP-4525",
+        "clearance": "LEVEL2",
+        "contain": "EUCLID",
+        "secondary": "none",
+        "disrupt": "VLAM",
+        "risk": "CAUTION"
+    },
+    {
+        "itemNumber": "SCP-4522",
+        "clearance": "LEVEL2",
+        "contain": "SAFE",
+        "secondary": "none",
+        "disrupt": "DARK",
+        "risk": "NOTICE"
+    },
+    {
+        "itemNumber": "SCP-4519",
+        "clearance": "4",
+        "contain": "keter (uncontained)",
+        "secondary": "none",
+        "disrupt": "dark",
+        "risk": "none"
+    },
+    {
+        "itemNumber": "SCP-4512",
+        "clearance": "LEVEL1",
+        "contain": "KETER",
+        "secondary": "none",
+        "disrupt": "KENEQ",
+        "risk": "WARNING"
+    },
+    {
+        "itemNumber": "SCP-4498",
+        "clearance": "LEVEL2",
+        "contain": "EUCLID",
+        "secondary": "none",
+        "disrupt": "KENEQ",
+        "risk": "CAUTION"
+    },
+    {
+        "itemNumber": "SCP-4489",
+        "clearance": "LEVEL2",
+        "contain": "SAFE",
+        "secondary": "none",
+        "disrupt": "VLAM",
+        "risk": "CAUTION"
+    },
+    {
+        "itemNumber": "SCP-4485",
+        "clearance": "LEVEL3",
+        "contain": "EUCLID",
+        "secondary": "none",
+        "disrupt": "KENEQ",
+        "risk": "WARNING"
+    },
+    {
+        "itemNumber": "SCP-4475",
+        "clearance": "4",
+        "contain": "keter",
+        "secondary": "none",
+        "disrupt": "none",
+        "risk": "notice"
+    },
+    {
+        "itemNumber": "SCP-4449",
+        "clearance": "LEVEL2",
+        "contain": "SAFE",
+        "secondary": "none",
+        "disrupt": "KENEQ",
+        "risk": "WARNING"
+    },
+    {
+        "itemNumber": "SCP-4447",
+        "clearance": "LEVEL3",
+        "contain": "PENDING",
+        "secondary": "{$secondary-class}",
+        "disrupt": "{$disruption-class}",
+        "risk": "{$risk-class}"
+    },
+    {
+        "itemNumber": "SCP-4444",
+        "clearance": "LEVEL4",
+        "contain": "ESOTERIC",
+        "secondary": "TICONDEROGA",
+        "disrupt": "VLAM",
+        "risk": "WARNING"
+    },
+    {
+        "itemNumber": "SCP-4420",
+        "clearance": "LEVEL2",
+        "contain": "NEUTRALIZED",
+        "secondary": "none",
+        "disrupt": "none",
+        "risk": "none"
+    },
+    {
+        "itemNumber": "SCP-4416",
+        "clearance": "4",
+        "contain": "euclid",
+        "secondary": "Thaumiel",
+        "disrupt": "none",
+        "risk": "warning"
+    },
+    {
+        "itemNumber": "SCP-4426",
+        "clearance": "LEVEL3",
+        "contain": "EUCLID",
+        "secondary": "none",
+        "disrupt": "VLAM",
+        "risk": "NOTICE"
+    },
+    {
+        "itemNumber": "SCP-4390",
+        "clearance": "LEVEL2",
+        "contain": "EUCLID",
+        "secondary": "none",
+        "disrupt": "VLAM",
+        "risk": "NOTICE"
+    },
+    {
+        "itemNumber": "SCP-4378",
+        "clearance": "LEVEL4",
+        "contain": "EUCLID",
+        "secondary": "none",
+        "disrupt": "AMIDA",
+        "risk": "CRITICAL"
+    },
+    {
+        "itemNumber": "SCP-4339",
+        "clearance": "LEVEL4",
+        "contain": "SAFE",
+        "secondary": "none",
+        "disrupt": "EKHI",
+        "risk": "CAUTION"
+    },
+    {
+        "itemNumber": "SCP-4333",
+        "clearance": "LEVEL4",
+        "contain": "KETER",
+        "secondary": "none",
+        "disrupt": "AMIDA",
+        "risk": "NOTICE"
+    },
+    {
+        "itemNumber": "SCP-4318",
+        "clearance": "LEVEL4",
+        "contain": "KETER",
+        "secondary": "none",
+        "disrupt": "EKHI",
+        "risk": "CRITICAL"
+    },
+    {
+        "itemNumber": "SCP-4320",
+        "clearance": "LEVEL3",
+        "contain": "EUCLID",
+        "secondary": "none",
+        "disrupt": "KENEQ",
+        "risk": "CAUTION"
+    },
+    {
+        "itemNumber": "SCP-4304",
+        "clearance": "none",
+        "contain": "Keter",
+        "secondary": "none",
+        "disrupt": "dark",
+        "risk": "notice"
+    },
+    {
+        "itemNumber": "SCP-4285",
+        "clearance": "LEVEL3",
+        "contain": "KETER",
+        "secondary": "none",
+        "disrupt": "EKHI",
+        "risk": "CAUTION"
+    },
+    {
+        "itemNumber": "SCP-4258",
+        "clearance": "LEVEL2",
+        "contain": "EUCLID",
+        "secondary": "none",
+        "disrupt": "VLAM",
+        "risk": "NOTICE"
+    },
+    {
+        "itemNumber": "SCP-4252",
+        "clearance": "LEVEL2",
+        "contain": "KETER",
+        "secondary": "none",
+        "disrupt": "VLAM",
+        "risk": "NOTICE"
+    },
+    {
+        "itemNumber": "SCP-4233",
+        "clearance": "LEVEL3",
+        "contain": "KETER",
+        "secondary": "none",
+        "disrupt": "KENEQ",
+        "risk": "CAUTION"
+    },
+    {
+        "itemNumber": "SCP-4217",
+        "clearance": "LEVEL2",
+        "contain": "KETER",
+        "secondary": "none",
+        "disrupt": "VLAM",
+        "risk": "DANGER"
+    },
+    {
+        "itemNumber": "SCP-4173",
+        "clearance": "LEVEL2",
+        "contain": "EUCLID",
+        "secondary": "none",
+        "disrupt": "DARK",
+        "risk": "CAUTION"
+    },
+    {
+        "itemNumber": "SCP-4190",
+        "clearance": "2",
+        "contain": "safe",
+        "secondary": "none",
+        "disrupt": "dark",
+        "risk": "none"
+    },
+    {
+        "itemNumber": "SCP-4115",
+        "clearance": "LEVEL2",
+        "contain": "NEUTRALIZED",
+        "secondary": "none",
+        "disrupt": "none",
+        "risk": "none"
+    },
+    {
+        "itemNumber": "SCP-4064",
+        "clearance": "LEVEL4",
+        "contain": "KETER",
+        "secondary": "none",
+        "disrupt": "DARK",
+        "risk": "WARNING"
+    },
+    {
+        "itemNumber": "SCP-SCP-4040",
+        "clearance": "LEVEL3",
+        "contain": "KETER",
+        "secondary": "none",
+        "disrupt": "KENEQ",
+        "risk": "WARNING"
+    }
+]
