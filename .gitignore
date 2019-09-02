@@ -27,3 +27,6 @@ node_modules/
 package-lock.json
 .vscode/launch.json
 acs-database.json
+
+# Misc
+screenshots/
