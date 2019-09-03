@@ -93,7 +93,12 @@
             return value.toLowerCase();
         }
         function linkFormatter(value, row, index) {
-            return "<a href='http://www.scp-wiki.net/"+value+"'>"+value+"</a>";
+            if (row.itemName !== undefined) {
+                console.log(row.itemName);
+                return "<a href='http://www.scp-wiki.net/"+value+"'>"+row.itemName+"</a>";
+            } else {                
+                return "<a href='http://www.scp-wiki.net/"+value+"'>"+value+"</a>";
+            }            
         }
 
         function clearFormatter(value, row, index) {
@@ -122,7 +127,7 @@
             }
         }
 
-        function cellStyle(value, column, row, index) {
+        function cellStyle(value, row, index) {
             value = value.toLowerCase();        
 
             return {

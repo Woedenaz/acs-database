@@ -16,6 +16,24 @@
         "risk": "none"
     },
     {
+        "itemName": "SCP-4485 Pg. 1",
+        "itemNumber": "SCP-4485",
+        "clearance": "3",
+        "contain": "euclid",
+        "secondary": "none",
+        "disrupt": "keneq",
+        "risk": "warning"
+    },
+    {
+        "itemName": "SCP-4485 Pg. 6",
+        "itemNumber": "SCP-4485/offset/5",
+        "clearance": "6",
+        "contain": "esoteric",
+        "secondary": "apollyon",
+        "disrupt": "amida",
+        "risk": "critical"
+    },
+    {
         "itemNumber": "SCP-4979",
         "clearance": "3",
         "contain": "SAFE",
@@ -256,12 +274,40 @@
         "risk": "WARNING"
     },
     {
+        "itemName": "SCP-4447 Rev. 1",
         "itemNumber": "SCP-4447",
         "clearance": "3",
         "contain": "PENDING",
         "secondary": "none",
         "disrupt": "none",
         "risk": "none"
+    },
+    {
+        "itemName": "SCP-4447 Rev. 2",
+        "itemNumber": "scp-4447/offset/1",
+        "clearance": "3",
+        "contain": "Keter",
+        "secondary": "none",
+        "disrupt": "vlam",
+        "risk": "caution"
+    },
+    {
+        "itemName": "SCP-4447 Rev. 3",
+        "itemNumber": "scp-4447/offset/2",
+        "clearance": "4",
+        "contain": "keter",
+        "secondary": "none",
+        "disrupt": "keneq",
+        "risk": "caution"
+    },
+    {
+        "itemName": "SCP-4447 Rev. 4",
+        "itemNumber": "scp-4447/offset/3",
+        "clearance": "1",
+        "contain": "safe",
+        "secondary": "none",
+        "disrupt": "vlam",
+        "risk": "caution"
     },
     {
         "itemNumber": "SCP-4444",
@@ -752,14 +798,6 @@
         "risk": "CAUTION"
     },
     {
-        "itemNumber": "SCP-2845",
-        "clearance": "none",
-        "contain": "Keter",
-        "secondary": "none",
-        "disrupt": "none",
-        "risk": "none"
-    },
-    {
         "itemNumber": "SCP-2812",
         "clearance": "3",
         "contain": "EUCLID",
@@ -854,5 +892,39 @@
         "secondary": "none",
         "disrupt": "VLAM",
         "risk": "NOTICE"
+    },
+    {
+        "itemNumber": "SCP-049-j",
+        "clearance": "3",
+        "contain": "EUCLID",
+        "secondary": "none",
+        "disrupt": "VLAM",
+        "risk": "caution"
+    },
+    {
+        "itemName": "scp-001 Atonement",
+        "itemNumber": "djkaktus-s-proposal-ii",
+        "clearance": "5",
+        "contain": "keter",
+        "secondary": "none",
+        "disrupt": "amida",
+        "risk": "critical"
+    },
+    {
+        "itemName": "scp-001 The Way It Ends",
+        "itemNumber": "djkaktus-s-proposal-iii",
+        "clearance": "6",
+        "contain": "ESOTERIC",
+        "secondary": "principalis",
+        "disrupt": "amida",
+        "risk": "notice"
+    },
+    {
+        "itemNumber": "SCP-001-B",
+        "clearance": "5",
+        "contain": "ESOTERIC",
+        "secondary": "slovenly",
+        "disrupt": "ekhi",
+        "risk": "danger"
     }
 ]
