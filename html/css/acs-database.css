@@ -1,0 +1,148 @@
+::-webkit-scrollbar {
+    width: 0.5rem !important;
+}
+
+:root {
+    --five-color: 196,2,51;
+    --four-color: 255,109,0;
+    --three-color: 255,211,0;
+    --two-color: 0,135,189;
+    --one-color: 0,159,107;
+    --title-font: "Poppins", sans-serif;
+    scrollbar-width: thin;
+}
+
+html,
+body,
+html *,
+body * {
+    overflow: visible !important;    
+}
+
+html, body, table {
+    width: calc(100vw - (100vw - 100%));
+    max-width: calc(100vw - (100vw - 100%));
+}
+
+body {
+    background-image: initial;
+    background-color: rgba(0,0,0,0);
+}
+
+table * {
+    text-transform: capitalize;
+}
+
+.table {
+    max-width: calc(100vw - (100vw - 100%)) !important;
+}
+
+table.floatThead-table {
+    border-top: none;
+    border-bottom: none;
+    background-color: rgb(252, 252, 252);
+    background-color: rgb(var(--white-monochrome, 252, 252, 252));
+}
+
+.fixed-table-toolbar div:first-of-type {
+    flex-grow: 2;
+    padding: 0 1rem;
+}
+
+th {   
+    font-size: 0.8rem;
+    background-color: rgb(252, 252, 252);
+    background-color: rgb(var(--white-monochrome, 252, 252, 252));
+}
+
+
+td[class*="pending"],
+#table > tbody > tr > td:nth-of-type(4):not(.none) {
+    background-color: rgba(12, 12, 12 ,1);
+    background-color: rgba(var(--black-monochrome,12, 12, 12),1);
+    box-shadow: inset 0.5rem 0 0 0 rgba(252, 252, 252 ,1);
+    box-shadow: inset 0.5rem 0 0 0 rgba(var(--white-monochrome, 252, 252, 252),1);
+    color: rgb(252,252,252);
+    color: rgb(var(--white-monochrome, 252, 252, 252));
+}
+
+td[class*="neutralized"] {
+    background-color: rgba(66, 66, 72 ,0.15);
+    background-color: rgba(var(--gray-monochrome, 66, 66, 72),0.25);
+    box-shadow: inset 0.5rem 0 0 0 rgba(66, 66, 72 ,1);
+    box-shadow: inset 0.5rem 0 0 0 rgba(var(--gray-monochrome, 66, 66, 72),1);
+}
+
+td[class*="explained"] {
+    background-color: rgba(66, 66, 72 ,0.15);
+    background-color: rgba(var(--black-monochrome, 12, 12, 12),0.15);
+    box-shadow: inset 0.5rem 0 0 0 rgba(66, 66, 72 ,1);
+    box-shadow: inset 0.5rem 0 0 0 rgba(var(--black-monochrome, 12, 12, 12),1);
+}
+
+td[class*="esoteric"] {
+    box-shadow: inset 0.5rem 0 0 0 rgba(66, 66, 72 ,1);
+    box-shadow: inset 0.5rem 0 0 0 rgba(var(--black-monochrome, 12, 12, 12),1);
+    position: relative;
+}
+
+td[class*="esoteric"]::after {
+    content: "➠";
+    width: 1em;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    position: absolute;
+    top: 0;
+    right: 0.5em;
+    font-size: 2em;
+}
+
+td[class*="safe"],
+td.unrestricted,
+td.dark,
+td.notice {
+    background-color: rgba(0,159,107,0.15);
+    background-color: rgba(var(--one-color),0.15);
+    box-shadow: inset 0.5rem 0 0 0 rgba(0,159,107,1);
+    box-shadow: inset 0.5rem 0 0 0 rgba(var(--one-color),1);
+}
+
+td.restricted,
+td.vlam,
+td.caution {
+    box-shadow: inset 0.5rem 0 0 0 rgba(0,135,189,1);
+    box-shadow: inset 0.5rem 0 0 0 rgba(var(--two-color),1);
+    background-color: rgba(0,135,189,0.15);
+    background-color: rgba(var(--two-color),0.15);
+}
+
+td[class*="euclid"],
+td.confidential,
+td.keneq,
+td.warning {
+    background-color: rgba(0,159,107,0.15);
+    background-color: rgba(var(--one-color),0.15);
+    box-shadow: inset 0.5rem 0 0 0 rgba(0,159,107,1);
+    box-shadow: inset 0.5rem 0 0 0 rgba(var(--one-color),1);
+}
+
+td.secret,
+td.ekhi,
+td.danger {
+    background-color: rgba(255,109,0,0.15);
+    background-color: rgba(var(--four-color),0.15);
+    box-shadow: inset 0.5rem 0 0 0 rgba(255,109,0,1);
+    box-shadow: inset 0.5rem 0 0 0 rgba(var(--four-color),1);
+}
+
+td[class*="keter"],
+td.top-secret,
+td.amida,
+td.critical {
+    background-color: rgba(196,2,51,0.15);
+    background-color: rgba(var(--five-color),0.15);
+    box-shadow: inset 0.5rem 0 0 0 rgba(196,2,51,1);
+    box-shadow: inset 0.5rem 0 0 0 rgba(var(--five-color),1);
+}

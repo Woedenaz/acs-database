@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html class=" -moz-" lang="en">
+
+    <head>
+        <title>ACS DATABASE</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <base target="_parent" />        
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">    
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.15.4/bootstrap-table.min.css" integrity="sha256-Bfo5E75379SXUZYuhGkuEc1K8EjSSpR/VF/axOVB8nw=" crossorigin="anonymous" />    
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap-editable/css/bootstrap-editable.css" integrity="sha256-YsJ7Lkc/YB0+ssBKz0c0GTx0RI+BnXcKH5SpnttERaY=" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.15.4/extensions/filter-control/bootstrap-table-filter-control.min.css" integrity="sha256-OnjGng36H44eUepBS49UZQSVcXeDUvQS1N9vBJzAAmE=" crossorigin="anonymous" />
+        <link rel="stylesheet" type="text/css" href="https://nu-scptheme.github.io/Black-Highlighter/css/min/black-highlighter.min.css">
+        <link rel="stylesheet" type="text/css" href="./css/acs-database.css">
+    </head>
+    <body>
+       
+    <section id="acs-database">
+        <table 
+            id="table" 
+            class="table sticky-header"
+            data-toggle="table"            
+            data-filter-control="true" 
+            data-click-to-select="true"
+            data-url="http://elusionillusion.com/scp/acs-database/acs-database.json">
+            <thead id="sticky-thead">
+            <tr>
+                <th 
+                    data-field="itemNumber" 
+                    data-filter-control="input" 
+                    data-sortable="true"
+                    data-cell-style="cellStyle"
+                    data-formatter="linkFormatter">
+                ITEM#
+                </th>
+                <th
+                    data-field="clearance" 
+                    data-filter-control="input" 
+                    data-sortable="true"
+                    data-cell-style="clearStyle"
+                    data-formatter="clearFormatter">
+                CLEARANCE
+                </th>
+                <th 
+                    data-field="contain" 
+                    data-filter-control="input" 
+                    data-sortable="true"
+                    data-cell-style="cellStyle"
+                    data-formatter="lowerFormatter">
+                CONTAINMENT
+                </th>
+                <th 
+                    data-field="secondary" 
+                    data-filter-control="input" 
+                    data-sortable="true"
+                    data-cell-style="cellStyle"
+                    data-formatter="lowerFormatter">
+                SECONDARY
+                </th>
+                <th 
+                    data-field="disrupt" 
+                    data-filter-control="input" 
+                    data-sortable="true",
+                    data-cell-style="cellStyle"
+                    data-formatter="lowerFormatter">
+                DISRUPTION
+                </th>
+                <th 
+                    data-field="risk" 
+                    data-filter-control="input" 
+                    data-sortable="true"
+                    data-cell-style="cellStyle"
+                    data-formatter="lowerFormatter">
+                RISK
+                </th>
+            </tr>
+            </thead>
+            <tbody class="w-auto">
+            
+            </tbody>
+        </table>
+    </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.15.4/bootstrap-table.min.js" integrity="sha256-zuYwDcub7myT0FRW3/WZI7JefCjyTmBJIoCS7Rb9xQc=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.15.4/extensions/editable/bootstrap-table-editable.min.js" integrity="sha256-DfqyyyRrwxVi1EADNp/zzRcDeX2brZMIGlEi2CxYl94=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.15.4/extensions/filter-control/bootstrap-table-filter-control.min.js" integrity="sha256-5EseDwRjjb49pNGkjVzU/wjc5xSPxXz5vsbFOee4syI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/floatthead/2.1.4/jquery.floatThead.min.js" integrity="sha256-GIZQ6RCSwtk+RBhcWRRSQZcCJzcGWZrlLpqYO/2F1mQ=" crossorigin="anonymous"></script>
+    <script src="js/acs-database.js"></script>
+    <script>
+        function lowerFormatter(value, row, index) {
+            return value.toLowerCase();
+        }
+        function linkFormatter(value, row, index) {
+            return "<a href='http://www.scp-wiki.net/"+value+"'>"+value+"</a>";
+        }
+
+        function clearFormatter(value, row, index) {
+            values = ["1&nbsp;/&nbsp;unrestricted", "2&nbsp;/&nbsp;restricted", "3&nbsp;/&nbsp;confidential", "4&nbsp;/&nbsp;secret", "5&nbsp;/&nbsp;top-secret", "6&nbsp;/&nbsp;cosmic-top-secret", "0&nbsp;/&nbsp;none"];
+            
+            if(value === "1") {                
+                return values[0]
+            }
+            if(value === "2") {
+                return values[1]
+            }
+            if(value === "3") {
+                return values[2]
+            }
+            if(value === "4") {
+                return values[3]
+            }
+            if(value === "5") {
+                return values[4]
+            }
+            if(value === "6") {
+                return values[5]
+            }
+            else {
+                return values[6]
+            }
+        }
+
+        function cellStyle(value, column, row, index) {
+            value = value.toLowerCase();        
+
+            return {
+                classes: value
+            };
+            
+        }
+        function clearStyle(value, row, index) {
+            classes = ["unrestricted", "restricted", "confidential", "secret", "top-secret", "cosmic-top-secret", "none"];
+            
+            if(value === "1") {
+                value = classes[0];
+                return {
+                    classes: classes[0]
+                };
+            }
+            if(value === "2") {
+                value = classes[1];
+                return {
+                    classes: classes[1]
+                };
+            }
+            if(value === "3") {
+                value = classes[2];
+                return {
+                    classes: classes[2]
+                };
+            }
+            if(value === "4") {
+                value = classes[3];
+                return {
+                    classes: classes[3]
+                };
+            }
+            if(value === "5") {
+                value = classes[4];
+                return {
+                    classes: classes[4]
+                };
+            }
+            if(value === "6") {
+                value = classes[5];
+                return {
+                    classes: classes[5]
+                };
+            }
+            else {
+                value = classes[6];
+                return {
+                    classes: classes[6]
+                };
+            }
+        }
+    </script>
+    </body>
+</html>

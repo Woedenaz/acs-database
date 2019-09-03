@@ -11,9 +11,9 @@
         "itemNumber": "SCP-4991",
         "clearance": "4",
         "contain": "NEUTRALIZED",
-        "secondary": "{$secondary-class}",
-        "disrupt": "fart",
-        "risk": "sonic the hedgehog sex"
+        "secondary": "none",
+        "disrupt": "none",
+        "risk": "none"
     },
     {
         "itemNumber": "SCP-4979",
@@ -72,14 +72,6 @@
         "risk": "none"
     },
     {
-        "itemNumber": "SCP-4871",
-        "clearance": "none",
-        "contain": "Euclid",
-        "secondary": "none",
-        "disrupt": "none",
-        "risk": "danger"
-    },
-    {
         "itemNumber": "SCP-4840",
         "clearance": "4",
         "contain": "KETER",
@@ -106,7 +98,7 @@
     {
         "itemNumber": "SCP-4812",
         "clearance": "4",
-        "contain": "SEE BELOW",
+        "contain": "Safe/Euclid/Keter",
         "secondary": "none",
         "disrupt": "EKHI",
         "risk": "DANGER"
@@ -147,15 +139,15 @@
         "itemNumber": "SCP-4643",
         "clearance": "2",
         "contain": "NEUTRALIZED",
-        "secondary": "{$secondary-class}",
-        "disrupt": "{$disruption-class}",
-        "risk": "{$risk-class}"
+        "secondary": "none",
+        "disrupt": "none",
+        "risk": "none"
     },
     {
         "itemNumber": "SCP-4624",
         "clearance": "1",
         "contain": "EUCLID",
-        "secondary": "{$secondary-class}",
+        "secondary": "none",
         "disrupt": "VLAM",
         "risk": "CAUTION"
     },
@@ -267,9 +259,9 @@
         "itemNumber": "SCP-4447",
         "clearance": "3",
         "contain": "PENDING",
-        "secondary": "{$secondary-class}",
-        "disrupt": "{$disruption-class}",
-        "risk": "{$risk-class}"
+        "secondary": "none",
+        "disrupt": "none",
+        "risk": "none"
     },
     {
         "itemNumber": "SCP-4444",
@@ -473,7 +465,7 @@
     },
     {
         "itemNumber": "SCP-3930",
-        "clearance": "Level5",
+        "clearance": "5",
         "contain": "esoteric",
         "secondary": "n/a",
         "disrupt": "ekhi",
@@ -636,14 +628,14 @@
         "clearance": "none",
         "contain": "{FIELD LEFT BLANK}",
         "secondary": "none",
-        "disrupt": "dark",
-        "risk": "none"
+        "disrupt": "ekhi",
+        "risk": "danger"
     },
     {
         "itemNumber": "SCP-3660",
         "clearance": "3",
         "contain": "SAFE",
-        "secondary": "{$secondary-class}",
+        "secondary": "none",
         "disrupt": "VLAM",
         "risk": "CAUTION"
     },
@@ -675,7 +667,7 @@
         "itemNumber": "SCP-3521",
         "clearance": "2",
         "contain": "SAFE",
-        "secondary": "{$secondary-class}",
+        "secondary": "none",
         "disrupt": "VLAM",
         "risk": "DANGER"
     },
@@ -739,9 +731,9 @@
         "itemNumber": "SCP-3293",
         "clearance": "2",
         "contain": "NEUTRALIZED",
-        "secondary": "{$secondary-class}",
-        "disrupt": "{$disruption-class}",
-        "risk": "{$risk-class}"
+        "secondary": "none",
+        "disrupt": "none",
+        "risk": "none"
     },
     {
         "itemNumber": "SCP-2941",
@@ -777,7 +769,7 @@
     },
     {
         "itemNumber": "SCP-2759",
-        "clearance": "LevelΩ",
+        "clearance": "Ω",
         "contain": "esoteric",
         "secondary": "thaumiel",
         "disrupt": "dark",
@@ -787,15 +779,15 @@
         "itemNumber": "SCP-2610",
         "clearance": "3",
         "contain": "NEUTRALIZED",
-        "secondary": "{$secondary-class}",
-        "disrupt": "{$disruption-class}",
-        "risk": "{$risk-class}"
+        "secondary": "none",
+        "disrupt": "none",
+        "risk": "none"
     },
     {
         "itemNumber": "SCP-2399",
         "clearance": "5",
         "contain": "KETER",
-        "secondary": "{$secondary-class}",
+        "secondary": "none",
         "disrupt": "AMIDA",
         "risk": "DANGER"
     },
@@ -814,14 +806,6 @@
         "secondary": "none",
         "disrupt": "EKHI",
         "risk": "DANGER"
-    },
-    {
-        "itemNumber": "SCP-2320",
-        "clearance": "none",
-        "contain": "Safe",
-        "secondary": "none",
-        "disrupt": "none",
-        "risk": "none"
     },
     {
         "itemNumber": "SCP-2316",
@@ -854,21 +838,6 @@
         "secondary": "none",
         "disrupt": "none",
         "risk": "none"
-    },
-    {
-        "itemNumber": "SCP-1698",
-        "clearance": "none",
-        "contain": "rating: +149+–x",
-        "secondary": "none",
-        "disrupt": "none",
-        "risk": "none"
-    },
-    {
-        "itemNumber": "SCP-1463",
-        "clearance": "none",
-        "secondary": "none",
-        "disrupt": "none",
-        "risk": "notice"
     },
     {
         "itemNumber": "SCP-1233",
