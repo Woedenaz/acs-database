@@ -9,13 +9,17 @@
     "url": "https://github.com/Woedenaz/acs-database"
   },
   "devDependencies": {
+    "chalk": "^2.4.2",
+    "draftlog": "^1.0.12",
+    "es6-promise-pool": "^2.5.0",
     "eslint-config-node": "^4.0.0",
     "node": "latest",
-    "puppeteer": "^1.19.0",
-    "chalk": "^2.4.2",
-    "es6-promise-pool": "^2.5.0"
+    "puppeteer": "^1.19.0"
   },
   "scripts": {
     "precommit": "eslint ."
+  },
+  "dependencies": {
+    "fs-extra": "^9.1.0"
   }
 }
