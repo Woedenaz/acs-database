@@ -1,5 +1,15 @@
+#vscode specific
+.vscode
+.vscode/launch.json
+
+#Mac Specific
+.DS_Store
+
 # Compiled class file
 *.class
+
+#JSON Files
+*.json
 
 # Log file
 *.log
@@ -28,5 +38,3 @@ hs_err_pid*
 # NPM
 node_modules/
 package-lock.json
-.vscode/launch.json
-.DS_Store

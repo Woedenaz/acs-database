@@ -11,7 +11,7 @@ require("draftlog").into(console);
 // MY OCD of colorful console.logs for debugging... IT HELPS
 // const error = chalk.bold.red;
 // const success = chalk.keyword("green");
-const CONCURRENCY = 10;
+const CONCURRENCY = 15;
 const reqPath = path.join(__dirname, "../");
 
 const URLS = [];
@@ -21,13 +21,16 @@ let totalNum = topNum - bottomNum + 1;
 let remainNum = 0;
 let acsCount = 0;
 let currentSCPArray = [];
-let currentSCP = "";
 
 const barLength = 50;
 let barLine = console.draft(`[${" ".repeat(barLength)}] 0%`);
-let currentDoc = console.draft("Starting SCP Scraping");
+let draft = console.draft(`Just Firing her Up!
+`);
 let errorLog = console.draft("");
-let draft = console.draft("Just Firing her Up!");
+let currentDoc = console.draft(`
+Starting SCP Scraping
+`);
+let secondErrorLog = console.draft(" ");
 
 for (var i = bottomNum; i >= bottomNum && i <= topNum; i++) {
 	if (i) {
@@ -44,6 +47,18 @@ for (var i = bottomNum; i >= bottomNum && i <= topNum; i++) {
 let ProgressBar = (progress, length) => {
 	let units = Math.round(progress / 2);
 	return `[${"=".repeat(units)}${" ".repeat(length - units)}] ${progress}%`;
+};
+
+const write = (fail,success) => {
+	let acsFiltered = acs.filter((el) => el != null);
+	let acsJSON = JSON.stringify(acsFiltered, null, 4);
+	fs.writeFileSync(`${reqPath}/acs-database.json`, acsJSON, "utf8",{ flag: "wx" }, (e) => {
+		if (e) {
+			return `${fail}: ${e}`;
+		}
+		return `${success}`;
+	});
+	return `${success}`;
 };
 
 let arrayRemove;
@@ -63,18 +78,17 @@ const crawlUrl = async (url) => {
 		let perNum;
 		let acsArray = [];
 		
-		var insideSCP = `SCP-${scpNum(url)}`;
-		currentSCP = insideSCP;
+		const href = await page.evaluate(() => document.URL);
+		const insideSCP = `SCP-${scpNum(href)}`;
 		currentSCPArray.push(insideSCP);		
-		const href = await page.evaluate(() => {
-			return document.URL;
-		});	
 		try { 
             await page.waitFor(1000);
 			await page.waitForSelector("div.anom-bar-container", { timeout: 5000 });
 			
 			acsResult = await page.evaluate(() => {
-                let itemNumber = document.querySelectorAll("div.top-left-box > span.number");
+				const href = document.URL;
+				const scpNum = (elem) => /(?<=(scp-))[0-9]{1,4}$/.exec(elem)[0];
+                let itemNumber = `SCP-${scpNum(href)}`;
 				let clearanceLevel = document.querySelectorAll("div.top-right-box > div.level");
 				let containClass = document.querySelectorAll("div.contain-class > div.class-text");					
 				let disruptClass = document.querySelectorAll("div.disrupt-class > div.class-text");
@@ -85,7 +99,7 @@ const crawlUrl = async (url) => {
 				try {
 					let secondaryClass = document.querySelectorAll("div.second-class > div.class-text");
 					acsArray = {
-						itemNumber: `SCP-${itemNumber[0].innerText.trim()}`,
+						itemNumber: itemNumber,
 						clearance: clearanceLevel[0].innerText.trim(),
 						contain: containClass[0].innerText.trim(),
 						secondary: secondaryClass[0].innerText.trim(),
@@ -94,7 +108,7 @@ const crawlUrl = async (url) => {
 					};
 				} catch (e) {
 					acsArray = {
-						itemNumber: itemNumber[0].innerText.trim(),
+						itemNumber: itemNumber,
 						clearance: clearanceLevel[0].innerText.trim(),
 						contain: containClass[0].innerText.trim(),
 						secondary: "none",
@@ -120,180 +134,180 @@ const crawlUrl = async (url) => {
 			let second;
 			let clear;
 			let disrupt;
-			let risk;				
+			let risk;
 			
-			if (containClass == true || disruptClass == true || riskClass == true) {
-				let testChilds = await page.evaluate(() => {
-					let results = document.querySelectorAll("div#page-content > *:nth-child(-n+4)");
-					return results;
-				});
-				let testChildsNum =  testChilds.length;
-				const testFind = (text) => { 
-					let testBool;	
-					let testText = text;					
-					for (let j = testChildsNum; j < testChildsNum; j++) {
-						let testChildInner = testChilds[j].innerText.toLowerCase();
-						testBool = testChildInner.includes(testText);
-					}
-					return testBool ? testBool : null;		
-				};
+			try {
+				if (containClass == true || disruptClass == true || riskClass == true) {
 
-				let	urClass = testFind("unrestricted");				
-				let	rsClass = testFind("restricted");				
-				let	cfClass = testFind("confidential");				
-				let	scClass = testFind("secret");				
-				let	tsClass = testFind("top secret");				
-				let	ctsClass = testFind("cosmic top secret");				
-				let	darkClass = testFind("dark");						
-				let	vlamClass = testFind("vlam");				
-				let	keneqClass = testFind("keneq");				
-				let	ekhiClass = testFind("ekhi");			
-				let	amidaClass = testFind("amida");				
-				let	noticeClass = testFind("notice");				
-				let	cautionClass = testFind("caution");				
-				let	warningClass = testFind("warning");				
-				let	dangerClass = testFind("danger");				
-				let	criticalClass = testFind("critical");	
+					const urClass = await page.evaluate(() => document.getElementById("page-content").innerText.toLowerCase().includes("unrestricted"));			
+					const rsClass = await page.evaluate(() => document.getElementById("page-content").innerText.toLowerCase().includes("restricted"));
+					const cfClass = await page.evaluate(() => document.getElementById("page-content").innerText.toLowerCase().includes("confidential"));
+					const scClass = await page.evaluate(() => document.getElementById("page-content").innerText.toLowerCase().includes("secret"));
+					const tsClass = await page.evaluate(() => document.getElementById("page-content").innerText.toLowerCase().includes("top secret"));
+					const ctsClass = await page.evaluate(() => document.getElementById("page-content").innerText.toLowerCase().includes("cosmic top secret"));
+					const darkClass = await page.evaluate(() => document.getElementById("page-content").innerText.toLowerCase().includes("dark"));				
+					const vlamClass = await page.evaluate(() => document.getElementById("page-content").innerText.toLowerCase().includes("vlam"));
+					const keneqClass = await page.evaluate(() => document.getElementById("page-content").innerText.toLowerCase().includes("keneq"));
+					const ekhiClass = await page.evaluate(() => document.getElementById("page-content").innerText.toLowerCase().includes("ekhi"));
+					const amidaClass = await page.evaluate(() => document.getElementById("page-content").innerText.toLowerCase().includes("amida"));
+					const noticeClass = await page.evaluate(() => document.getElementById("page-content").innerText.toLowerCase().includes("notice"));
+					const cautionClass = await page.evaluate(() => document.getElementById("page-content").innerText.toLowerCase().includes("caution"));
+					const warningClass = await page.evaluate(() => document.getElementById("page-content").innerText.toLowerCase().includes("warning"));
+					const dangerClass = await page.evaluate(() => document.getElementById("page-content").innerText.toLowerCase().includes("danger"));
+					const criticalClass = await page.evaluate(() => document.getElementById("page-content").innerText.toLowerCase().includes("critical"));
 
-				let containContainer;	
-				let secondContainer;
-				
-				try {
-					itemNum = `${insideSCP}`;						
-				} catch (e) {
-					console.log(`Item # Error:${e}`);
-				}							
+					let containContainer;	
+					let secondContainer;
+					
+					try {
+						const href = await page.evaluate(() => document.URL);
+						const scpNum = (elem) => /(?<=(scp-))[0-9]{1,4}$/.exec(elem)[0];
+						itemNum = `SCP-${scpNum(href)}`;						
+					} catch (e) {
+						console.log(`Item # Error:${e}`);
+					}							
 
-				try {
-					contain = await page.evaluate(() => {
-						try {					
-							containContainer = document.evaluate(
-								"/html/body//text()[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'containment class')]",
-								document,
-								null,
-								XPathResult.FIRST_ORDERED_NODE_TYPE,
-								null
-							)
-							.singleNodeValue;
-						} catch (e) {
-							console.log(`contain single value Error:${e}`);
-						}
-						
-						if (
-							containContainer.nextSibling && containContainer.nextSibling.textContent.length > 1 && testString.test(containContainer.nextSibling.textContent.trim())) {
-							return containContainer.nextSibling.textContent.trim();
-						} else if (
-							containContainer.nextSibling && containContainer.nextSibling.textContent.length > 1 && testString.test(containContainer.nextElementSibling.textContent.trim())) {
-							return containContainer.nextElementSibling.textContent.trim();
-						} else if (
-							containContainer.parentNode.childNodes[1] && containContainer.parentNode.childNodes[1].textContent.length > 1 && testString.test(containContainer.parentNode.childNodes[1].textContent.trim())) {
-							return containContainer.parentNode.childNodes[1].textContent.trim();
-						} else if (
-							containContainer.parentNode.childNodes[2] && containContainer.parentNode.childNodes[2].textContent.length > 1 && testString.test(containContainer.parentNode.childNodes[2].textContent.trim())) {
-							return containContainer.parentNode.childNodes[2].textContent.trim();
-						} else if (
-							containContainer.parentNode.parentNode.childNodes[1] && containContainer.parentNode.parentNode.childNodes[1].textContent.length > 1 && testString.test(containContainer.parentNode.parentNode.childNodes[1].textContent.trim())) {
-							return containContainer.parentNode.parentNode.childNodes[1].textContent.trim();
-						} else if (
-							containContainer.parentNode.parentNode.childNodes[2] && containContainer.parentNode.parentNode.childNodes[2].textContent.length > 1 && testString.test(containContainer.parentNode.parentNode.childNodes[2].textContent.trim())) {
-							return containContainer.parentNode.parentNode.childNodes[2].textContent.trim();
-						}							
-					});						
-				} catch (e) {								
-					contain = "none";
-				}							
-
-				try {
-					second = await page.evaluate(() => {
-						try {					
-							secondContainer = document
-								.evaluate(
-									// eslint-disable-next-line quotes
-									'/html/body//text()[contains(translate(., "ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"),"secondary class")]',
+					try {
+						contain = await page.evaluate(() => {
+							try {					
+								containContainer = document.evaluate(
+									"/html/body//text()[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'containment class')]",
 									document,
 									null,
 									XPathResult.FIRST_ORDERED_NODE_TYPE,
 									null
 								)
 								.singleNodeValue;
-						} catch (e) {
-							console.log(`second single value Error:${e}`);
-						}						
-						if (
-							secondContainer.nextSibling && secondContainer.nextSibling.textContent.length > 1 && testString.test(secondContainer.nextSibling.textContent.trim())) {
-							return secondContainer.nextSibling.textContent.trim();
-						} else if (
-							secondContainer.nextSibling && secondContainer.nextSibling.textContent.length > 1 && testString.test(secondContainer.nextElementSibling.textContent.trim())) {
-							return secondContainer.nextElementSibling.textContent.trim();
-						} else if (
-							secondContainer.parentNode.childNodes[1] && secondContainer.parentNode.childNodes[1].textContent.length > 1 && testString.test(secondContainer.parentNode.childNodes[1].textContent.trim())) {
-							return secondContainer.parentNode.childNodes[1].textContent.trim();
-						} else if (
-							secondContainer.parentNode.childNodes[2] && secondContainer.parentNode.childNodes[2].textContent.length > 1 && testString.test(secondContainer.parentNode.childNodes[2].textContent.trim())) {
-							return secondContainer.parentNode.childNodes[2].textContent.trim();
-						} else if (
-							secondContainer.parentNode.parentNode.childNodes[1] && secondContainer.parentNode.parentNode.childNodes[1].textContent.length > 1 && testString.test(secondContainer.parentNode.parentNode.childNodes[1].textContent.trim())) {
-							return secondContainer.parentNode.parentNode.childNodes[1].textContent.trim();
-						} else if (
-							secondContainer.parentNode.parentNode.childNodes[2] && secondContainer.parentNode.parentNode.childNodes[2].textContent.length > 1 && testString.test(secondContainer.parentNode.parentNode.childNodes[2].textContent.trim())) {
-							return secondContainer.parentNode.parentNode.childNodes[2].textContent.trim();
-						}								
-					});						
-				} catch (e) {								
-					second = "none";						
-				}
-				
-				clear =
-					(ctsClass) ? "6" :
-					(tsClass) ? "5" :
-					(scClass) ? "4" :
-					(cfClass) ? "3" :
-					(rsClass) ? "2" :
-					(urClass) ? "1" :
-					"none";						
-				
-				disrupt =
-					(darkClass) ? "dark" :
-					(vlamClass) ? "vlam" :
-					(keneqClass) ? "keneq" :
-					(ekhiClass) ? "ekhi" :
-					(amidaClass) ? "amida" :
-					"none";
+							} catch (e) {
+								console.log(`contain single value Error:${e}`);
+							}
+							
+							if (
+								containContainer.nextSibling && containContainer.nextSibling.textContent.length > 1 && testString.test(containContainer.nextSibling.textContent.trim())) {
+								return containContainer.nextSibling.textContent.trim();
+							} else if (
+								containContainer.nextSibling && containContainer.nextSibling.textContent.length > 1 && testString.test(containContainer.nextElementSibling.textContent.trim())) {
+								return containContainer.nextElementSibling.textContent.trim();
+							} else if (
+								containContainer.parentNode.childNodes[1] && containContainer.parentNode.childNodes[1].textContent.length > 1 && testString.test(containContainer.parentNode.childNodes[1].textContent.trim())) {
+								return containContainer.parentNode.childNodes[1].textContent.trim();
+							} else if (
+								containContainer.parentNode.childNodes[2] && containContainer.parentNode.childNodes[2].textContent.length > 1 && testString.test(containContainer.parentNode.childNodes[2].textContent.trim())) {
+								return containContainer.parentNode.childNodes[2].textContent.trim();
+							} else if (
+								containContainer.parentNode.parentNode.childNodes[1] && containContainer.parentNode.parentNode.childNodes[1].textContent.length > 1 && testString.test(containContainer.parentNode.parentNode.childNodes[1].textContent.trim())) {
+								return containContainer.parentNode.parentNode.childNodes[1].textContent.trim();
+							} else if (
+								containContainer.parentNode.parentNode.childNodes[2] && containContainer.parentNode.parentNode.childNodes[2].textContent.length > 1 && testString.test(containContainer.parentNode.parentNode.childNodes[2].textContent.trim())) {
+								return containContainer.parentNode.parentNode.childNodes[2].textContent.trim();
+							}							
+						});						
+					} catch (e) {								
+						contain = null;
+					}							
 
-				risk =
-					(noticeClass) ? "notice" :
-					(cautionClass) ? "caution" :
-					(warningClass) ? "warning" :
-					(dangerClass) ? "danger" :
-					(criticalClass) ? "critical" :
-					"none";
+					try {
+						second = await page.evaluate(() => {
+							try {					
+								secondContainer = document
+									.evaluate(
+										// eslint-disable-next-line quotes
+										'/html/body//text()[contains(translate(., "ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"),"secondary class")]',
+										document,
+										null,
+										XPathResult.FIRST_ORDERED_NODE_TYPE,
+										null
+									)
+									.singleNodeValue;
+							} catch (e) {
+								console.log(`second single value Error:${e}`);
+							}						
+							if (
+								secondContainer.nextSibling && secondContainer.nextSibling.textContent.length > 1 && testString.test(secondContainer.nextSibling.textContent.trim())) {
+								return secondContainer.nextSibling.textContent.trim();
+							} else if (
+								secondContainer.nextSibling && secondContainer.nextSibling.textContent.length > 1 && testString.test(secondContainer.nextElementSibling.textContent.trim())) {
+								return secondContainer.nextElementSibling.textContent.trim();
+							} else if (
+								secondContainer.parentNode.childNodes[1] && secondContainer.parentNode.childNodes[1].textContent.length > 1 && testString.test(secondContainer.parentNode.childNodes[1].textContent.trim())) {
+								return secondContainer.parentNode.childNodes[1].textContent.trim();
+							} else if (
+								secondContainer.parentNode.childNodes[2] && secondContainer.parentNode.childNodes[2].textContent.length > 1 && testString.test(secondContainer.parentNode.childNodes[2].textContent.trim())) {
+								return secondContainer.parentNode.childNodes[2].textContent.trim();
+							} else if (
+								secondContainer.parentNode.parentNode.childNodes[1] && secondContainer.parentNode.parentNode.childNodes[1].textContent.length > 1 && testString.test(secondContainer.parentNode.parentNode.childNodes[1].textContent.trim())) {
+								return secondContainer.parentNode.parentNode.childNodes[1].textContent.trim();
+							} else if (
+								secondContainer.parentNode.parentNode.childNodes[2] && secondContainer.parentNode.parentNode.childNodes[2].textContent.length > 1 && testString.test(secondContainer.parentNode.parentNode.childNodes[2].textContent.trim())) {
+								return secondContainer.parentNode.parentNode.childNodes[2].textContent.trim();
+							}								
+						});						
+					} catch (e) {								
+						second = null;						
+					}
 					
-				acsResult  = {
-					itemNumber: itemNum,
-					clearance: clear,
-					contain: contain,
-					secondary: second,
-					disrupt: disrupt,
-					risk: risk
-				};
-				try {
-					await page.screenshot({ path:`${reqPath}/screenshots/acs-pages/plain/acs-plain-page-${scpNum(url)}.png`});
-				} catch (e) {
-					errorLog(`Screenshot Exists Plain: SCP-${scpNum(url)}`);
+					clear =
+						(ctsClass) ? "6" :
+						(tsClass) ? "5" :
+						(scClass) ? "4" :
+						(cfClass) ? "3" :
+						(rsClass) ? "2" :
+						(urClass) ? "1" :
+						null;						
+					
+					disrupt =
+						(darkClass) ? "dark" :
+						(vlamClass) ? "vlam" :
+						(keneqClass) ? "keneq" :
+						(ekhiClass) ? "ekhi" :
+						(amidaClass) ? "amida" :
+						null;
+
+					risk =
+						(noticeClass) ? "notice" :
+						(cautionClass) ? "caution" :
+						(warningClass) ? "warning" :
+						(dangerClass) ? "danger" :
+						(criticalClass) ? "critical" :
+						null;
+
+					acsResult  = {
+						itemNumber: itemNum,
+						clearance: clear,
+						contain: contain,
+						secondary: second,
+						disrupt: disrupt,
+						risk: risk
+					};
+					try {
+						await page.screenshot({ path:`${reqPath}/screenshots/acs-pages/plain/acs-plain-page-${scpNum(url)}.png`});
+					} catch (e) {
+						errorLog(`Screenshot Exists Plain: SCP-${scpNum(url)}`);
+					}
 				}
+			} catch (e) {
+				errorLog(`No ACS On: SCP-${scpNum(url)} | ${e}`);
 			}
 		}	
-	
-	await currentDoc(`Current Document Being Evaluated: ${href}`);
-	if (acsResult) {	
-		if (!(!acsResult.clearance || acsResult.clearance == "none") && !(!acsResult.contain || acsResult.contain == "none") && !(!acsResult.secondary || acsResult.secondary == "none") && !(!acsResult.disrupt || acsResult.disrupt == "none") && !(!acsResult.risk || acsResult.risk == "none")) {		
+	await page.close();
+	// await currentDoc(`Current Document Being Evaluated: ${href}`);
+	if (acsResult) {
+		let itemNumTest = (acsResult.itemNumber) ? true : false;
+		let clearTest = (acsResult.clearance) ? true : false;
+		let containTest = (acsResult.contain) ? true : false;
+		let secondTest = (acsResult.secondary) ? true : false;
+		let disruptTest = (acsResult.disrupt) ? true : false;
+		let riskTest = (acsResult.risk) ? true : false;
+		if ((itemNumTest) && (clearTest || containTest || secondTest || disruptTest || riskTest)) {		
 			// console.log(`acs: ${JSON.stringify(acs, null, 4)} | acsResult: ${JSON.stringify(acsResult, null, 4)}`);
 			// console.log(`acs type: ${typeof acs} | acsResult type: ${typeof acsResult}`);
-			acsCount = acsCount + 1;
+			currentDoc(`==================================================
+-=============${acsResult.itemNumber} Pushed : acs!=============-
+==================================================`);
 			acs.push(acsResult);
+			acsCount = acsCount + 1;
 		}
 	}
-	await page.close();
 	let index = currentSCPArray.indexOf(insideSCP);
 	try {
 		perNum = Math.floor((remainNum / totalNum) * 100);
@@ -306,12 +320,14 @@ const crawlUrl = async (url) => {
 				return ele != value; 
 			});
 		};
-		errorLog(`index: ${index} | ${currentSCPArray[index]}`);
+		//errorLog(`index: ${index} | ${currentSCPArray[index]}`);
 		currentSCPArray = arrayRemove(currentSCPArray, currentSCPArray[index]);
 	}
 	barLine(ProgressBar(perNum, barLength));
 	draft(`% done: ${perNum} | ACS Count: ${acsCount} 
 Current SCPs: ${currentSCPArray.toString()}`);
+	write("The temp file has failed!","The temp file is successfully still saved");
+	errorLog(write("The temp file has failed!","The temp file is successfully saved"));
 };
 
 const promiseProducer = () => {
@@ -340,6 +356,8 @@ const mainFunc = async () => {
 
     // Starts browser.
     browser = await puppeteer.launch({
+		ignoreHTTPSErrors: true,
+		product: "firefox",
 		headless: true,
 		args: ["--no-sandbox", "--disable-setuid-sandbox"],
 	});
@@ -350,15 +368,19 @@ const mainFunc = async () => {
     
     browser.close();
     // Print results.
-    let acsFiltered = acs.filter((el) => el != null);
-    let acsJSON = JSON.stringify(acsFiltered, null, 4);
-    fs.writeFileSync(`${reqPath}/acs-database.json`, acsJSON, "utf8",{ flag: "wx" }, (e) => {
-        if (e) {
-            return console.log(e);
-        }
-        console.log("The file was saved!");
-    });
+	write("The file failed to write!","The file was saved!");
+	errorLog(write("The file failed to write!","The file was saved!"));
+    //let acsFiltered = acs.filter((el) => el != null);
+    //let acsJSON = JSON.stringify(acsFiltered, null, 4);
+    //fs.writeFileSync(`${reqPath}/acs-database.json`, acsJSON, "utf8",{ flag: "wx" }, (e) => {
+    //    if (e) {
+    //        return console.log(e);
+    //    }
+    //    console.log("The file was saved!");
+    //});
 };
 
-mainFunc();
+mainFunc().catch((e) => {
+	secondErrorLog(`mainFunc Error: ${e}`);
+});
 console.clear();
