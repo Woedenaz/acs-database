@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html class=" -moz-" lang="en">
+<html lang="en">
 
     <head>
         <title>ACS DATABASE</title>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <base target="_parent" />        
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">    
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.15.4/bootstrap-table.min.css" integrity="sha256-Bfo5E75379SXUZYuhGkuEc1K8EjSSpR/VF/axOVB8nw=" crossorigin="anonymous" />    
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap-editable/css/bootstrap-editable.css" integrity="sha256-YsJ7Lkc/YB0+ssBKz0c0GTx0RI+BnXcKH5SpnttERaY=" crossorigin="anonymous" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.15.4/extensions/filter-control/bootstrap-table-filter-control.min.css" integrity="sha256-OnjGng36H44eUepBS49UZQSVcXeDUvQS1N9vBJzAAmE=" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">    
+        <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.css">    
+        <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.2/bootstrap-table.min.css" integrity="sha512-Ok8cRZATfQ1eP0n90TyzhngMiBwgTv/H9CGpqoqHNHfecTORN9ExMo6rxcQSowCX9i1rpz+JVvFJD+IBmHJkyw==" crossorigin="anonymous" />
         <link rel="stylesheet" type="text/css" href="https://nu-scptheme.github.io/Black-Highlighter/css/min/black-highlighter.min.css">
         <link rel="stylesheet" type="text/css" href="./css/acs-database.css">
     </head>
@@ -23,7 +24,7 @@
             data-toggle="table"            
             data-filter-control="true" 
             data-click-to-select="true"
-            data-url="http://elusionillusion.com/scp/acs-database/acs-database.json">
+            data-url="https://elusionillusion.com/scp/acs-database/acs-database-merge.json">
             <thead id="sticky-thead">
             <tr>
                 <th 
@@ -33,6 +34,14 @@
                     data-cell-style="cellStyle"
                     data-formatter="linkFormatter">
                 ITEM#
+                </th>
+                <th 
+                    data-field="itemName" 
+                    data-filter-control="input" 
+                    data-sortable="true"
+                    data-cell-style="clearStyle"
+                    data-formatter="titleFormatter">
+                TITLE
                 </th>
                 <th
                     data-field="clearance" 
@@ -81,105 +90,197 @@
             </tbody>
         </table>
     </section>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.15.4/bootstrap-table.min.js" integrity="sha256-zuYwDcub7myT0FRW3/WZI7JefCjyTmBJIoCS7Rb9xQc=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.2/bootstrap-table.min.js" integrity="sha512-ffrlJUspXYOW6r1y8tWOJHIE6yRUsbq6ESHxcUNU9NU9GWDZ+sS9zlb5SvKqeMEw8XSJXyDLz59PZFIqHHpJBQ==" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.15.4/extensions/editable/bootstrap-table-editable.min.js" integrity="sha256-DfqyyyRrwxVi1EADNp/zzRcDeX2brZMIGlEi2CxYl94=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.15.4/extensions/filter-control/bootstrap-table-filter-control.min.js" integrity="sha256-5EseDwRjjb49pNGkjVzU/wjc5xSPxXz5vsbFOee4syI=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/floatthead/2.1.4/jquery.floatThead.min.js" integrity="sha256-GIZQ6RCSwtk+RBhcWRRSQZcCJzcGWZrlLpqYO/2F1mQ=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.18.2/extensions/filter-control/bootstrap-table-filter-control.min.js" integrity="sha512-SG4bDzD0Jg7eoV3a9EINkVX7Z3LOivLsNxUkBqk/rvTJRX7Ta1FfPn5K6QNt6XTLb6zwOrkOcBrqvCz3VHRroQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/floatthead/2.2.1/jquery.floatThead.min.js" integrity="sha512-q0XkdCnK0e3QLJgYrtENEEmAv+urSGCQs/xCXF4xs+NoLfNWD+j7iMqNYXtFOQfnYDsfE4Z7phZqaHgYJrGB/g==" crossorigin="anonymous"></script>
     <script src="js/acs-database.js"></script>
     <script>
         function lowerFormatter(value, row, index) {
-            return value.toLowerCase();
+            try {
+                if (value) {
+                    if (!value.includes("{$")) {
+                        return value.toLowerCase();
+                    } else {
+                        return "none";
+                    }
+                } else {
+                    return "0&nbsp;/&nbsp;none";
+                }
+            } catch (e) {
+                console.log(`lowerFormatter Error: ${value}`)
+            } 
+        }
+        function titleFormatter(value, row, index) {
+            try {
+                if (value) {
+                    if (!value.includes("{$")) {
+                        return row.itemName.replace(
+                            /\w\S*/g,
+                            function(txt) {
+                            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+                            }
+                        );
+                    }else {
+                        return "none";
+                    }
+                } else {
+                    return "0&nbsp;/&nbsp;none";
+                }
+            } catch (e) {
+                console.log(`lowerFormatter Error: ${value}`)
+            } 
         }
         function linkFormatter(value, row, index) {
-            if (row.itemName !== undefined) {
-                console.log(row.itemName);
-                return "<a href='http://www.scp-wiki.net/"+value+"'>"+row.itemName+"</a>";
-            } else {                
-                return "<a href='http://www.scp-wiki.net/"+value+"'>"+value+"</a>";
-            }            
+            try {
+                if (value) {
+                    if (!value.includes("{$")) {
+                        console.log(row.itemName);
+                        return `<a href='${row.url}'>${row.itemNumber}</a>`;
+                    }else {
+                        return "none";
+                    }
+                } else {
+                    return "0&nbsp;/&nbsp;none";
+                }         
+            } catch (e) {
+                console.log(`linkFormatter Error: ${value}`)
+            }   
         }
 
         function clearFormatter(value, row, index) {
-            values = ["1&nbsp;/&nbsp;unrestricted", "2&nbsp;/&nbsp;restricted", "3&nbsp;/&nbsp;confidential", "4&nbsp;/&nbsp;secret", "5&nbsp;/&nbsp;top-secret", "6&nbsp;/&nbsp;cosmic-top-secret", "0&nbsp;/&nbsp;none"];
-            
-            if(value === "1") {                
-                return values[0]
-            }
-            if(value === "2") {
-                return values[1]
-            }
-            if(value === "3") {
-                return values[2]
-            }
-            if(value === "4") {
-                return values[3]
-            }
-            if(value === "5") {
-                return values[4]
-            }
-            if(value === "6") {
-                return values[5]
-            }
-            else {
-                return values[6]
+            try {
+                if (value) {
+                    if (!value.includes("{$")) {
+                        values = ["1&nbsp;/&nbsp;unrestricted", "2&nbsp;/&nbsp;restricted", "3&nbsp;/&nbsp;confidential", "4&nbsp;/&nbsp;secret", "5&nbsp;/&nbsp;top-secret", "6&nbsp;/&nbsp;cosmic-top-secret", "0&nbsp;/&nbsp;none"];
+                        
+                        if(value === "1") {                
+                            return values[0];
+                        }
+                        if(value === "2") {
+                            return values[1];
+                        }
+                        if(value === "3") {
+                            return values[2];
+                        }
+                        if(value === "4") {
+                            return values[3];
+                        }
+                        if(value === "5") {
+                            return values[4];
+                        }
+                        if(value === "6") {
+                            return values[5];
+                        }
+                        else {
+                            return value;
+                        }
+                    }else {
+                        return {
+                            value: "none"
+                        };
+                    }
+                } else {
+                    return "0&nbsp;/&nbsp;none";
+                }
+            } catch (e) {
+                console.log(`clearFormatter Error: ${value}`)
             }
         }
 
         function cellStyle(value, row, index) {
-            value = value.toLowerCase();        
-
-            return {
-                classes: value
-            };
+            try {
+                if (value) {
+                    if (!value.includes("{$")) {
+                        value = value.toLowerCase();        
+                        if (/^[^a-zA-Z]+/.test(value)) {
+                            return {
+                                classes: `irregular-${row}-${value}`
+                            };
+                        } else {
+                            return {
+                                classes: value
+                            }
+                        }
+                    }else {
+                        return {
+                            classes: "none"
+                        };
+                    }
+                } else {
+                    return "0&nbsp;/&nbsp;none";
+                }
+            } catch (e) {
+                console.log(`cellStyle Error: ${value}`)
+            }
             
         }
         function clearStyle(value, row, index) {
-            classes = ["unrestricted", "restricted", "confidential", "secret", "top-secret", "cosmic-top-secret", "none"];
-            
-            if(value === "1") {
-                value = classes[0];
-                return {
-                    classes: classes[0]
-                };
-            }
-            if(value === "2") {
-                value = classes[1];
-                return {
-                    classes: classes[1]
-                };
-            }
-            if(value === "3") {
-                value = classes[2];
-                return {
-                    classes: classes[2]
-                };
-            }
-            if(value === "4") {
-                value = classes[3];
-                return {
-                    classes: classes[3]
-                };
-            }
-            if(value === "5") {
-                value = classes[4];
-                return {
-                    classes: classes[4]
-                };
-            }
-            if(value === "6") {
-                value = classes[5];
-                return {
-                    classes: classes[5]
-                };
-            }
-            else {
-                value = classes[6];
-                return {
-                    classes: classes[6]
-                };
-            }
+            try {
+                if (value) {
+                    if (!value.includes("{$")) {
+                        classes = ["unrestricted", "restricted", "confidential", "secret", "top-secret", "cosmic-top-secret"];
+                        
+                        if(value === "1") {
+                            value = classes[0];
+                            return {
+                                classes: classes[0]
+                            };
+                        }
+                        if(value === "2") {
+                            value = classes[1];
+                            return {
+                                classes: classes[1]
+                            };
+                        }
+                        if(value === "3") {
+                            value = classes[2];
+                            return {
+                                classes: classes[2]
+                            };
+                        }
+                        if(value === "4") {
+                            value = classes[3];
+                            return {
+                                classes: classes[3]
+                            };
+                        }
+                        if(value === "5") {
+                            value = classes[4];
+                            return {
+                                classes: classes[4]
+                            };
+                        }
+                        if(value === "6") {
+                            value = classes[5];
+                            return {
+                                classes: classes[5]
+                            };
+                        }
+                        else {                            
+                            if (/^[^a-zA-Z]+/.test(value)) {
+                                return {
+                                    classes: `irregular-clear-${value}`
+                                };
+                            } else {
+                                return {
+                                    classes: value
+                                }
+                            }
+                        }
+                    } else {
+                        return {
+                            classes: "none"
+                        };
+                    }
+                } else {
+                    return "0&nbsp;/&nbsp;none";
+                }
+            } catch (e) {
+                console.log(`clearStyle Error: ${value}`)
+            } 
         }
     </script>
     </body>

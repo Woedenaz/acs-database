@@ -1,22 +1,25 @@
 /* jshint esversion: 8 */
 
 const path = require("path");
-const puppeteer = require("puppeteer");
-// const chalk = require("chalk");
+const reqPath = path.join(__dirname, "../");
+const puppeteer = require("puppeteer-extra");
 const PromisePool = require("es6-promise-pool");
 const fs = require("fs");
 const fsExtra = require("fs-extra");
 require("draftlog").into(console);
+//let jsonTempData = require(path.join(reqPath, "html/acs-database-temp.json"));
+//const jsonMainData = require(path.join(reqPath, "html/acs-database.json"));
+const AdblockerPlugin = require("puppeteer-extra-plugin-adblocker");
+const StealthPlugin = require("puppeteer-extra-plugin-stealth");
+puppeteer.use(AdblockerPlugin({ blockTrackers: true }));
+puppeteer.use(StealthPlugin());
 
-// MY OCD of colorful console.logs for debugging... IT HELPS
-// const error = chalk.bold.red;
-// const success = chalk.keyword("green");
 const CONCURRENCY = 15;
-const reqPath = path.join(__dirname, "../");
 
-const URLS = [];
-let bottomNum = 5000;
-let topNum = 6000;
+const seriesURLS = [];
+const scpsURLS = [];
+let bottomNum = 2;
+let topNum = 5999;
 let totalNum = topNum - bottomNum + 1;
 let remainNum = 0;
 let acsCount = 0;
@@ -25,11 +28,32 @@ let currentSCPArray = [];
 const barLength = 50;
 let barLine = console.draft(`[${" ".repeat(barLength)}] 0%`);
 let draft = console.draft("\nJust Firing her Up!\n");
-let errorLog = console.draft("");
+//let errorLog = console.draft("");
 let currentDoc = console.draft("\nStarting SCP Scraping\n");
-let secondErrorLog = console.draft("");
+//let secondErrorLog = console.draft("");
+//let scpPageErrorLog = console.draft("");
 
-async function popURLs() {
+function scpNum(elem) {
+	try {
+		let test = /(?<=(scp-))[0-9]{1,4}$/.exec(elem)[0];
+		return test;
+	} catch (e) {
+		//secondErrorLog(`scpNum1 Error: ${e}`);
+	}
+}
+
+function popNameURLs() {
+	seriesURLS.push("https://scp-wiki.wikidot.com/scp-series-6");
+	seriesURLS.push("https://scp-wiki.wikidot.com/scp-series-5");
+	seriesURLS.push("https://scp-wiki.wikidot.com/scp-series-4");
+	seriesURLS.push("https://scp-wiki.wikidot.com/scp-series-3");
+	seriesURLS.push("https://scp-wiki.wikidot.com/scp-series-2");
+	seriesURLS.push("https://scp-wiki.wikidot.com/scp-series");
+	// let testvar = seriesURLS;
+	// return console.log(`seriesURLS: ${testvar}`);
+}
+
+function popSCPURLs() {
 	for (var i = bottomNum; i >= bottomNum && i <= topNum; i++) {
 		if (i) {
 			const scpnum = (num) => {
@@ -39,9 +63,11 @@ async function popURLs() {
 					return num.toString();
 				}
 			};
-			URLS.push(`https://scp-wiki.wikidot.com/scp-${scpnum(i)}`);			
+			scpsURLS.push(`https://scp-wiki.wikidot.com/scp-${scpnum(i)}`);			
 		}
 	}
+	//let testvar = scpsURLS.pop();
+	//return console.log(`seriesURLS: ${testvar}`);
 }
 
 async function progressBar(progress, length) {
@@ -49,134 +75,190 @@ async function progressBar(progress, length) {
 	return `[${"=".repeat(units)}${" ".repeat(length - units)}] ${progress}%`;
 }
 
-async function write(fail, success) {
-	let acsFiltered = acs.filter((el) => el != null);
-	let acsJSON = JSON.stringify(acsFiltered, null, 4);
-	fs.writeFileSync(`${reqPath}/acs-database.json`, acsJSON, "utf8", { flag: "wx" }, (e) => {
-		if (e) {
-			return `${fail}: ${e}`;
-		}
-	});
-	return `${success}`;
+function write(jsonfile, fail, success, filename) {
+	try {
+		let jsonfiltered = jsonfile.filter((el) => el != null);
+		let acsJSON = JSON.stringify(jsonfiltered, null, 4);
+		fs.writeFileSync(`${reqPath}/html/${filename}`, acsJSON, "utf8", { flag: "wx" }, (e) => {
+			if (e) {
+				return `${fail}: ${e}`;
+			}
+		});
+		return `${success}`;
+	} catch (e) {
+		//scpPageErrorLog(`Write Error: ${e}`);
+	}
 }
 
-let arrayRemove;
+/* async function jsonMergeData(list1, list2) {
+	try {
+		var tempMerg = list1.map((item) => {
+			return Object.assign({}, list2[item], item); 
+		}); 
+		let JSONfile = JSON.stringify(tempMerg, null, 4);
+		fs.writeFileSync(`${reqPath}/html/acs-database-merge.json`, JSONfile, "utf8", { flag: "wx" }, (e) => {
+			if (e) {
+				return `Write Fail: ${e}`;
+			}
+		});
+	} catch (e) {
+		scpPageErrorLog(`jsonMergeData Error: ${e}`);
+	} 
+}
+*/
+
+//let arrayRemove;
 
 let browser;
 let acs = [];
+let scpNames = [];
 const testString = /^[a-zA-Z0-9\s-]+$/;
-const scpNum = (elem) => /(?<=(scp-))[0-9]{1,4}$/.exec(elem)[0];
+
+async function getSCPNames(url) {
+	// open a new page
+	const page = await browser.newPage();
+	// enter url in page
+	await page.goto(url, { waitUntil: "domcontentloaded", timeout: 0 });
+	await page.setViewport({ width: 800, height: 600 });
+	
+	let scpNamesResults;
+	try {
+		await page.waitForTimeout(1000);
+		await page.waitForSelector("#page-content", { timeout: 5000 });
+		scpNamesResults = await page.evaluate(() => {
+			let scpBlock = document.querySelectorAll("div.series");
+			let scpLinks = scpBlock[0].querySelectorAll("ul a[href*='scp-']");
+			let scpnamesArray = [];
+			let scpnamesSingleInner;
+			for (let i = 0; i < scpLinks.length; i++) {
+				scpnamesSingleInner = {
+					itemNumber: `${scpLinks[i].href}` ? `${scpLinks[i].href.replace(/((http:\/\/scp-wiki\.wikidot\.com\/)|(https:\/\/scp-wiki\.wikidot\.com\/))/i, "")}` : null,
+					scpName: scpLinks[i].parentNode.innerText.replace(/^(scp-[0-9]{1,4} - )/ig, "") ? scpLinks[i].parentNode.innerText.replace(/^(scp-[0-9]{1,4} - )/ig, "") : null
+				};
+				scpnamesArray.push(scpnamesSingleInner);
+			}
+			return scpnamesArray;
+		});
+		for (let i = 0; i < scpNamesResults.length; i++) {
+			scpNames = scpNames.concat(scpNamesResults[i]);
+		}
+	} catch (e) {
+		//scpPageErrorLog(`scpnamesArray 1: ${scpNamesResults} | Error: ${e}`);
+	} finally {
+		try {			
+			write(scpNames, "The SCP Names file has failed!", "The SCP Names file is successfully still saved", "scp-names-db.json");
+			//errorLog(write(scpNames, "The SCP Names file has failed!", "The SCP Names file is successfully still saved", "scp-names-db.json"));
+		} catch (e) {
+			//scpPageErrorLog(`scpnamesArray 2: ${scpNames} | Error: ${e}`);
+		}
+	}
+}
+
 async function crawlUrl(url) {
 	// open a new page
 	const page = await browser.newPage();
 	// enter url in page
 	await page.goto(url, { waitUntil: "domcontentloaded", timeout: 0 });
+	await page.setViewport({ width: 800, height: 600 });
+	const reqPath = path.join(__dirname, "../");
+
+	await page.addScriptTag({url:"https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"});
+	
 	let acsResult;
 	remainNum++;
 	let perNum;
-	let acsArray = [];
+
+	let findSCPName = async (elem) => {
+		const jsonSCPNames = require(path.join(reqPath, "html/scp-names-db.json"));
+		for (let i = 0; i < jsonSCPNames.length; i++) {
+			if (jsonSCPNames[i].itemNumber.toLowerCase() == elem.toLowerCase()) {
+				return jsonSCPNames[i].scpName ? jsonSCPNames[i].scpName : null;
+			}
+		}
+	};
 
 	const href = await page.evaluate(() => document.URL);
 	const insideSCP = `SCP-${scpNum(href)}`;
+	
 	currentSCPArray.push(insideSCP);
 	try {
-		await page.waitFor(1000);
+		await page.waitForTimeout(1000);
 		try {
 			await page.waitForSelector("div.anom-bar-container", { timeout: 5000 });
-			acsResult = await page.evaluate(() => {
-				const href = document.URL;
-				const scpNum = (elem) => /(?<=(scp-))[0-9]{1,4}$/.exec(elem)[0];
-				let itemNumber = `SCP-${scpNum(href)}`;
-				let clearanceLevel = document.querySelectorAll("div.top-right-box > div.level");
-				let containClass = document.querySelectorAll("div.contain-class > div.class-text");
-				let disruptClass = document.querySelectorAll("div.disrupt-class > div.class-text");
-				let riskClass = document.querySelectorAll("div.risk-class > div.class-text");
-
-				acsArray = [];
-
-				try {
-					let secondaryClass = document.querySelectorAll("div.second-class > div.class-text");
-					acsArray = {
-						itemNumber: itemNumber,
-						clearance: clearanceLevel[0].innerText.trim() ? clearanceLevel[0].innerText.trim() : null,
-						contain: containClass[0].innerText.trim() ? containClass[0].innerText.trim() : null,
-						secondary: secondaryClass[0].innerText.trim() ? secondaryClass[0].innerText.trim() : null,
-						disrupt: disruptClass[0].innerText.trim() ? disruptClass[0].innerText.trim() : null,
-						risk: riskClass[0].innerText.trim() ? riskClass[0].innerText.trim() : null
-					};
-				} catch (e) {
-					acsArray = {
-						itemNumber: itemNumber,
-						clearance: clearanceLevel[0].innerText.trim() ? clearanceLevel[0].innerText.trim() : null,
-						contain: containClass[0].innerText.trim() ? containClass[0].innerText.trim() : null,
-						secondary: null,
-						disrupt: disruptClass[0].innerText.trim() ? disruptClass[0].innerText.trim() : null,
-						risk: riskClass[0].innerText.trim() ? riskClass[0].innerText.trim() : null
-					};
-				}
-				return acsArray;
-			});
+			let itemNumber = `SCP-${scpNum(href)}`;
+			let itemName = await findSCPName(insideSCP);
+			let clearanceLevel = await page.evaluate(() => document.querySelectorAll("div.top-right-box > div.level")[0].innerText.trim());
+			let containClass= await page.evaluate(() => document.querySelectorAll("div.contain-class > div.class-text")[0].innerText.trim());
+			let secondaryClass= await page.evaluate(() => document.querySelectorAll("div.second-class > div.class-text")[0].innerText.trim());
+			let disruptClass= await page.evaluate(() => document.querySelectorAll("div.disrupt-class > div.class-text")[0].innerText.trim());
+			let riskClass= await page.evaluate(() => document.querySelectorAll("div.risk-class > div.class-text")[0].innerText.trim());
+			let url = href;
+			acsResult = {
+				itemName: itemName ? itemName : "none",
+				itemNumber: itemNumber ? itemNumber : "none",
+				clearance: clearanceLevel ? clearanceLevel : "none",
+				contain: containClass ? containClass : "none",
+				secondary: secondaryClass ? secondaryClass : "none",
+				disrupt: disruptClass ? disruptClass : "none",
+				risk: riskClass ? riskClass : "none",
+				url: url ? url : "none"
+			};
 			try {
 				await page.screenshot({ path: `${reqPath}/screenshots/acs-pages/styled/acs-styled-page-${scpNum(url)}.png` });
 			} catch (e) {
-				errorLog(`Screenshot Exists Styled: SCP-${scpNum(url)}`);
+				//errorLog(`Screenshot Exists Styled: SCP-${scpNum(url)}`);
 			}
 		} catch (e) {
-			await page.waitForSelector("div.acs-hybrid-text-bar", { timeout: 5000 });
-			acsResult = await page.evaluate(() => {
-				const href = document.URL;
-				const scpNum = (elem) => /(?<=(scp-))[0-9]{1,4}$/.exec(elem)[0];
-				let itemNumber = `SCP-${scpNum(href)}`;
-				let clearanceLevel = document.querySelectorAll("div.clearance-level-text");
-				let containClass = document.querySelectorAll("div.acs-contain div.acs-text > span:last-of-type");
-				let disruptClass = document.querySelectorAll("div.acs-disrupt div.acs-text > span");
-				let riskClass = document.querySelectorAll("div.acs-risk div.acs-text > span");
-
-				acsArray = [];
-
-				try {
-					let secondaryClass = document.querySelectorAll("div.acs-secondary div.acs-text > span:last-of-type");
-					acsArray = {
-						itemNumber: itemNumber,
-						clearance: clearanceLevel[0].innerText.trim() ? clearanceLevel[0].innerText.trim() : "none",
-						contain: containClass[0].innerText.trim() ? containClass[0].innerText.trim() : "none",
-						secondary: secondaryClass[0].innerText.trim() ? secondaryClass[0].innerText.trim() : "none",
-						disrupt: disruptClass[0].innerText.trim() ? disruptClass[0].innerText.trim() : "none",
-						risk: riskClass[0].innerText.trim() ? riskClass[0].innerText.trim() : "none"
-					};
-				} catch (e) {
-					acsArray = {
-						itemNumber: itemNumber,
-						clearance: clearanceLevel[0].innerText.trim() ? clearanceLevel[0].innerText.trim() : "none",
-						contain: containClass[0].innerText.trim() ? containClass[0].innerText.trim() : "none",
-						secondary: "none",
-						disrupt: disruptClass[0].innerText.trim() ? disruptClass[0].innerText.trim() : "none",
-						risk: riskClass[0].innerText.trim() ? riskClass[0].innerText.trim() : "none"
-					};
-				}
-				return acsArray;
-			});
 			try {
-				await page.screenshot({ path: `${reqPath}/screenshots/acs-pages/hybrid/acs-hybrid-page-${scpNum(url)}.png` });
+				//console.log(`style failure: ${e}`);
+				await page.waitForSelector("div.acs-hybrid-text-bar", { timeout: 5000 });
+				let itemNumber = `SCP-${scpNum(href)}`;
+				let itemName = await findSCPName(insideSCP);
+				let clearanceLevel = await page.evaluate(() => document.querySelectorAll("div.acs-hybrid-text-bar div.acs-clear")[0].innerText.replace(/([^0-9])/g, ""));
+				let containClass= await page.evaluate(() => document.querySelectorAll("div.acs-hybrid-text-bar div.acs-contain div.acs-text > span")[1].innerText.trim());
+				let secondaryClass= await page.evaluate(() => document.querySelectorAll("div.acs-hybrid-text-bar div.acs-secondary div.acs-text > span")[1].innerText.trim());
+				let disruptClass= await page.evaluate(() => document.querySelectorAll("div.acs-hybrid-text-bar div.acs-disrupt > div.acs-text")[0].childNodes[3].nodeValue.replace(/[^a-zA-Z ]/g, ""));
+				let riskClass= await page.evaluate(() => document.querySelectorAll("div.acs-hybrid-text-bar div.acs-risk div.acs-text")[0].childNodes[3].nodeValue.replace(/[^a-zA-Z ]/g, ""));
+				let url = href;
+
+				acsResult = {
+					itemName: itemName ? itemName : "none",
+					itemNumber: itemNumber ? itemNumber : "none",
+					clearance: clearanceLevel ? clearanceLevel : "none",
+					contain: containClass ? containClass : "none",
+					secondary: secondaryClass ? secondaryClass : "none",
+					disrupt: disruptClass ? disruptClass : "none",
+					risk: riskClass ? riskClass : "none",
+					url: url ? url : "none"
+				};
+				try {
+					await page.screenshot({ path: `${reqPath}/screenshots/acs-pages/hybrid/acs-hybrid-page-${scpNum(url)}.png` });
+				} catch (e) {
+					//errorLog(`Screenshot Exists Hybrid: SCP-${scpNum(url)}`);
+				}
 			} catch (e) {
-				errorLog(`Screenshot Exists Hybrid: SCP-${scpNum(url)}`);
-			}
+				//console.log(`Hybrid Error: ${e}`);
+			}	
 		}
 	} catch (e) {
-		// errorLog(`No ACS Element on ${url}. Brute force scraping instead.`);			
+		// errorLog(`No ACS Element on ${url}. Brute force scraping instead.`);	
+		//console.log(`style & hybrid failure: ${e}`);		
 		const containClass = await page.evaluate(() => window.find("Containment Class"));
 		const disruptClass = await page.evaluate(() => window.find("Disrution Class"));
 		const riskClass = await page.evaluate(() => window.find("Risk Class"));
 
-		let itemNum;
+		let itemNumber = `SCP-${scpNum(href)}`;
 		let contain;
 		let second;
 		let clear;
 		let disrupt;
 		let risk;
+		let url = href;
 
 		try {
 			if (containClass == true || disruptClass == true || riskClass == true) {
+
+				let itemName = await findSCPName(itemNumber);
 
 				const urClass = await page.evaluate(() => document.getElementById("page-content").innerText.toLowerCase().includes("unrestricted"));
 				const rsClass = await page.evaluate(() => document.getElementById("page-content").innerText.toLowerCase().includes("restricted"));
@@ -199,14 +281,6 @@ async function crawlUrl(url) {
 				let secondContainer;
 
 				try {
-					const href = await page.evaluate(() => document.URL);
-					const scpNum = (elem) => /(?<=(scp-))[0-9]{1,4}$/.exec(elem)[0];
-					itemNum = `SCP-${scpNum(href)}`;
-				} catch (e) {
-					console.log(`Item # Error:${e}`);
-				}
-
-				try {
 					contain = await page.evaluate(() => {
 						try {
 							containContainer = document.evaluate(
@@ -218,7 +292,7 @@ async function crawlUrl(url) {
 							)
 								.singleNodeValue;
 						} catch (e) {
-							console.log(`contain single value Error:${e}`);
+							//secondErrorLog(`contain single value Error:${e}`);
 						}
 
 						if (containContainer.nextSibling && containContainer.nextSibling.textContent.length > 1 && testString.test(containContainer.nextSibling.textContent.trim())) {
@@ -253,7 +327,7 @@ async function crawlUrl(url) {
 								)
 								.singleNodeValue;
 						} catch (e) {
-							console.log(`second single value Error:${e}`);
+							//secondErrorLog(`second single value Error:${e}`);
 						}
 						if (secondContainer.nextSibling && secondContainer.nextSibling.textContent.length > 1 && testString.test(secondContainer.nextSibling.textContent.trim())) {
 							return secondContainer.nextSibling.textContent.trim();
@@ -299,33 +373,36 @@ async function crawlUrl(url) {
 										"none";
 
 				acsResult = {
-					itemNumber: itemNum,
-					clearance: clear,
-					contain: contain,
-					secondary: second,
-					disrupt: disrupt,
-					risk: risk
+					itemName: itemName ? itemName : "none",
+					itemNumber: itemNumber ? itemNumber : "none",
+					clearance: clear ? clear : "none",
+					contain: contain ? contain : "none",
+					secondary: second ? second : "none",
+					disrupt: disrupt ? disrupt : "none",
+					risk: risk ? risk : "none",
+					url: url ? url : "none"
 				};
 				try {
 					await page.screenshot({ path: `${reqPath}/screenshots/acs-pages/plain/acs-plain-page-${scpNum(url)}.png` });
 				} catch (e) {
-					errorLog(`Screenshot Exists Plain: SCP-${scpNum(url)}`);
+					//errorLog(`Screenshot Exists Plain: SCP-${scpNum(url)}`);
 				}
 			}
 		} catch (e) {
-			errorLog(`No ACS On: SCP-${scpNum(url)} | ${e}`);
+			//errorLog(`No ACS On: SCP-${scpNum(url)} | ${e}`);
 		}
 	}
 	await page.close();
 	// await currentDoc(`Current Document Being Evaluated: ${href}`);
 	if (acsResult) {
-		let itemNumTest = !(acsResult.itemNumber == "none") ? true : false;
-		let clearTest = !(acsResult.clearance == "none") ? true : false;
-		let containTest = !(acsResult.contain == "none") ? true : false;
-		let secondTest = !(acsResult.secondary == "none") ? true : false;
-		let disruptTest = !(acsResult.disrupt == "none") ? true : false;
-		let riskTest = !(acsResult.risk) ? true : false;
-		if ((itemNumTest) && (clearTest || containTest || secondTest || disruptTest || riskTest)) {
+		let itemNameTest = (acsResult.itemName !== "none" || acsResult.itemName !== "[ACCESS DENIED]") ? true : false;
+		let itemNumTest = (acsResult.itemNumber !== "none") ? true : false;
+		let clearTest = (acsResult.clearance !== "none") ? true : false;
+		let containTest = (acsResult.contain !== "none") ? true : false;
+		let secondTest = (acsResult.secondary !== "none") ? true : false;
+		let disruptTest = (acsResult.disrupt !== "none") ? true : false;
+		let riskTest = (acsResult.risk !== "none") ? true : false;
+		if ((itemNameTest && itemNumTest) && (clearTest || containTest || secondTest || disruptTest || riskTest)) {
 			// console.log(`acs: ${JSON.stringify(acs, null, 4)} | acsResult: ${JSON.stringify(acsResult, null, 4)}`);
 			// console.log(`acs type: ${typeof acs} | acsResult type: ${typeof acsResult}`);
 			currentDoc(`==================================================
@@ -335,33 +412,50 @@ async function crawlUrl(url) {
 			acsCount = acsCount + 1;
 		}
 	}
-	let index = currentSCPArray.indexOf(insideSCP);
+	//let index = currentSCPArray.indexOf(insideSCP);
 	try {
 		perNum = Math.floor((remainNum / totalNum) * 100);
 	} catch (e) {
-		console.log(`cannot divide by zero:${e}`);
+		//secondErrorLog(`cannot divide by zero:${e}`);
 	}
-	if (currentSCPArray[index]) {
-		arrayRemove = (arr, value) => arr.filter(function (ele) {
-			return ele != value;
-		});
-		//errorLog(`index: ${index} | ${currentSCPArray[index]}`);
-		currentSCPArray = arrayRemove(currentSCPArray, currentSCPArray[index]);
-	}
+	//if (currentSCPArray[index]) {
+	//	arrayRemove = async (arr, value) => arr.filter(function (ele) {
+	//		return ele != value;
+	//	});
+	//	//errorLog(`index: ${index} | ${currentSCPArray[index]}`);
+	//	currentSCPArrayTemp = await arrayRemove(currentSCPArray, currentSCPArray[index]);
+	//}
 	barLine(await progressBar(perNum, barLength));
-	await draft(`% done: ${perNum} | ACS Count: ${acsCount} 
-Current SCPs: ${currentSCPArray.toString()}`);
-	await write("The temp file has failed!", "The temp file is successfully still saved");
-	errorLog(await write("The temp file has failed!", "The temp file is successfully saved"));
+	await draft(`% done: ${perNum} | ACS Count: ${acsCount}`);
+	write(acs, "The temp file has failed!", "The temp file is successfully still saved", "acs-database-temp.json");
+	/* try {
+		let jsonfiltered = acs.filter((el) => el != null);
+		jsonTempData = JSON.stringify(jsonfiltered, null, 4);
+	} catch (e) {
+		scpPageErrorLog(`jsonTempData redefine Error: ${e}`);
+	} */
+	//errorLog(write(acs, "The temp file has failed!", "The temp file is successfully still saved", "acs-database-temp.json"));
 }
 
-async function promiseProducer() {
-	const url = await URLS.pop();
-	return url ? crawlUrl(url) : null;
+function getSCPNamesProducer() {
+	const SCPurl = seriesURLS.pop();
+	return SCPurl ? getSCPNames(SCPurl) : null;
 }
 
-async function mainFunc() {
-	async () => {
+function crawlUrlProducer() {
+	const Singleurl = scpsURLS.pop();
+	return Singleurl ? crawlUrl(Singleurl) : null;
+}
+
+async function mainFunc() {	
+	// Starts browser.
+	browser = await puppeteer.launch({
+		ignoreHTTPSErrors: true,
+		product: "chrome",
+		headless: true,
+		args: ["--no-sandbox", "--disable-setuid-sandbox"],
+	});	
+	try {
 		// Create or Empty Directories
 		if (fs.existsSync(`${reqPath}/screenshots`)) {
 			// errorLog(`Path Empty: ${reqPath}`);
@@ -379,30 +473,46 @@ async function mainFunc() {
 			fs.mkdirSync(`${reqPath}/screenshots/acs-pages/plain`);
 			fs.mkdirSync(`${reqPath}/screenshots/acs-pages/hybrid`);
 			fs.mkdirSync(`${reqPath}/screenshots/acs-pages/styled`);
+		}	
+		try {	
+			popNameURLs();
+			popSCPURLs();
+		} catch (e) {
+			//console.log(e);
+		} finally {
+			// Runs thru all the urls in a series pool of given concurrency.
+			const namespool = new PromisePool(getSCPNamesProducer, 5);
+			const namespoolStart = namespool.start();
+
+			await namespoolStart.then(async function () {
+				//console.log("All namespool promises fulfilled");				
+			}, function () {
+				// console.log("Some namespool promise rejected: " + e.message);
+			});	
+			
+			// Runs thru all the urls in a scp pool of given concurrency.
+			const scppool = new PromisePool(crawlUrlProducer, CONCURRENCY);
+			const scppoolStart = scppool.start();
+
+			await scppoolStart.then(function () {
+				//console.log("All scppool promises fulfilled");
+			}, function () {
+				// console.log("Some scppool promise rejected: " + e.message);
+				
+			});
 		}
-	};
-
-	await popURLs();
-
-	// Starts browser.
-	browser = await puppeteer.launch({
-		ignoreHTTPSErrors: true,
-		product: "firefox",
-		headless: false,
-		args: ["--no-sandbox", "--disable-setuid-sandbox"],
-	});
-
-	// Runs thru all the urls in a pool of given concurrency.
-	const pool = await new PromisePool(promiseProducer, CONCURRENCY);
-	await pool.start();
-
-	await browser.close();
-	// Print results.
-	await write("The file failed to write!", "The file was saved!");
-	errorLog(await write("The file failed to write!", "The file was saved!"));
+	} catch (e) {
+		//secondErrorLog(e);
+		await browser.close();
+	} finally {
+		await browser.close();
+		// Print results.
+		write(acs, "The file failed to write!", "The file was saved!", "acs-database.json");
+		//errorLog(write(acs, "The file failed to write!", "The file was saved!", "acs-database.json"));
+		// await jsonMergeData(jsonTempData, jsonMainData);
+	}
 }
-
-mainFunc().catch((e) => {
-	secondErrorLog(`mainFunc Error: ${e}`);
+mainFunc().catch(() => {
+	//secondErrorLog(`mainFunc Error: ${e}`);
 });
-console.clear();
+

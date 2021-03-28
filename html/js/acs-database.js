@@ -4,20 +4,23 @@
 /* eslint-disable indent */
 /* eslint-disable no-tabs */
 /* eslint-disable no-var */
+/* jshint esversion: 8 */
+/* jshint browser: true */
 /* exported log */
 // add event cross browser
 
-"use strict";
+(function () {
+    "use strict";
 
-const acsTable = $("#table tbody");
-const acsTableParent = $("#table");
+    const acsTable = $("#table tbody");
+    const acsTableParent = $("#table");
 
-$(document).ready( function() {
+    $(document).ready( function() {
 
-    $("table").floatThead();
-
-    $(acsTableParent).bootstrapTable("refresh");    
-});
+        $("table").floatThead();
+        
+    });
+}());
 
 
 

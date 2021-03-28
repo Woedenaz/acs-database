@@ -14,12 +14,19 @@
     "es6-promise-pool": "^2.5.0",
     "eslint-config-node": "^4.0.0",
     "node": "latest",
-    "puppeteer": "^1.19.0"
+    "puppeteer": "5.x"
   },
   "scripts": {
     "precommit": "eslint ."
   },
   "dependencies": {
-    "fs-extra": "^9.1.0"
+    "@types/puppeteer": "5.x",
+    "eslint": "6.0.0",
+    "fs-extra": "^9.1.0",
+    "path": "^0.12.7",
+    "puppeteer-extra": "^3.1.18",
+    "puppeteer-extra-plugin-adblocker": "^2.11.11",
+    "puppeteer-extra-plugin-stealth": "^2.7.6",
+    "yarn": "^1.22.10"
   }
 }

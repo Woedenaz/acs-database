@@ -38,3 +38,5 @@ hs_err_pid*
 # NPM
 node_modules/
 package-lock.json
+*.lock
+*.bak
